@@ -274,7 +274,7 @@ export default function Home() {
     if (curtainTimer.current) clearInterval(curtainTimer.current)
     curtainTimer.current = setInterval(() => {
       setCurtainIndex(prev => (prev + 1) % curtainPanels.length)
-    }, 4000)
+    }, 3200)
   }
 
   useEffect(() => {
@@ -561,7 +561,7 @@ export default function Home() {
         </div>
 
         {/* RIGHT — Curtain panel sincronizado com a lista */}
-        <div className="hidden lg:flex items-center justify-center lg:sticky lg:top-28 lg:w-full" style={{ alignSelf: 'start' }}>
+        <div className="hidden lg:block lg:sticky lg:top-28" style={{ alignSelf: 'start' }}>
           <div
             className="relative w-full h-[460px] overflow-hidden"
             style={{ clipPath: 'polygon(0 0, 100% 0, 91% 100%, 0 100%)' }}
@@ -574,7 +574,7 @@ export default function Home() {
                 initial={shouldReduceMotion ? false : { clipPath: 'inset(0 100% 0 0)' }}
                 animate={{ clipPath: 'inset(0 0% 0 0)' }}
                 exit={shouldReduceMotion ? {} : { opacity: 0, transition: { duration: 0.15 } }}
-                transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] as const }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] as const }}
               >
                 <p
                   className="font-display font-bold text-center max-w-[320px]"
