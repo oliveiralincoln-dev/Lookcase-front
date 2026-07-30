@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import RotatingText from '@/components/ui/rotating-text'
-import { Iphone } from '@/components/ui/iphone'
 import { LookcaseMark } from '@/components/ui/lookcase-mark'
 import { Marquee, MarqueeCard } from '@/components/ui/marquee'
 import { Link2, Percent, Zap, Package, Share2, Palette, Shield, ClipboardList, Layers, Headphones, Infinity, RefreshCw, Shirt } from 'lucide-react'
@@ -13,7 +12,7 @@ import { PromiseSection } from '@/components/sections/promise-section'
 import { StorefrontMockup } from '@/components/ui/storefront-mockup'
 import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { PricingSection } from '@/components/sections/pricing-section'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { LightRays } from '@/components/ui/light-rays'
 
 // URL do app (auth/dashboard/vitrine) — fica em outro repositório.
@@ -198,7 +197,19 @@ const galleryCell = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const } },
 }
 
+const heroContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.18 } },
+}
+
+const blurFadeIn = {
+  hidden: { opacity: 0, filter: 'blur(6px)' },
+  visible: { opacity: 1, filter: 'blur(0px)', transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as const } },
+}
+
 export default function Home() {
+
+  const shouldReduceMotion = useReducedMotion()
 
   // Scroll reveal — observa todos [data-scroll]
   useEffect(() => {
@@ -257,214 +268,139 @@ export default function Home() {
           HERO
           ============================================================ */}
       <section
-        className="relative px-5 lg:px-10 pt-[72px] pb-16 overflow-hidden hero-grid"
-        style={{ minHeight: '88vh' }}
+        className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center text-center px-6 py-24"
       >
-        {/* Dot grid background */}
+        {/* Textura de linhas diagonais — canto superior direito */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute top-0 right-0 w-[340px] h-[140px] pointer-events-none"
           style={{
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
-            maskImage: 'radial-gradient(ellipse 90% 90% at 55% 40%, black 30%, transparent 80%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 90% 90% at 55% 40%, black 30%, transparent 80%)',
+            background: 'repeating-linear-gradient(-45deg, rgba(249,115,22,0.22) 0px, rgba(249,115,22,0.22) 1px, transparent 1px, transparent 16px)',
+            WebkitMaskImage: 'linear-gradient(to bottom left, black, transparent 70%)',
+            maskImage: 'linear-gradient(to bottom left, black, transparent 70%)',
           }}
         />
 
-        {/* Glow — lado direito, atrás do mockup */}
+        {/* Glow radial laranja */}
         <div
           className="absolute pointer-events-none"
           style={{
-            top: '-80px',
-            right: '-60px',
-            width: '640px',
-            height: '640px',
-            background: 'radial-gradient(ellipse, rgba(249,115,22,0.08) 0%, transparent 62%)',
-            filter: 'blur(1px)',
+            top: '58%',
+            left: '58%',
+            transform: 'translate(-50%, -50%)',
+            width: 640,
+            height: 560,
+            background: 'radial-gradient(circle, rgba(249,115,22,0.24) 0%, rgba(249,115,22,0) 68%)',
           }}
         />
 
-        {/* LEFT — copy */}
-        <div className="relative z-10">
+        {/* Conteúdo — blur+fade em cascata no mount */}
+        <motion.div
+          className="relative z-10 flex flex-col items-center"
+          variants={heroContainer}
+          initial={shouldReduceMotion ? 'visible' : 'hidden'}
+          animate="visible"
+        >
 
-          {/* Badge social proof */}
-          <div className="hero-fade-up" style={{ animationDelay: '0ms' }}>
-            <div className="inline-flex items-center gap-[7px] bg-lk-orange-dim border border-lk-orange-rim rounded-full px-[14px] py-[5px] mb-6">
-              <div className="w-[6px] h-[6px] rounded-full bg-lk-orange flex-shrink-0 animate-pulse" />
-              <span className="font-body text-[12px] text-lk-gray-100">
-                Feito para quem vende moda de verdade
-              </span>
-            </div>
-          </div>
-
-          {/* Headline */}
-          <div className="mb-5">
-            <h1
-              className="font-display text-[36px] lg:text-[58px] font-medium tracking-[-0.04em] leading-[1.02] hero-fade-up"
-              style={{ animationDelay: '0.1s' }}>
-              Sua vitrine <span className="italic">profissional,</span>
-            </h1>
-
-            <h1
-              className="font-display text-[36px] lg:text-[58px] font-medium text-lk-white tracking-[-0.04em] leading-[1.02] hero-fade-up italic"
-              style={{ animationDelay: '0.2s' }}>
-              no ar em minutos.
-            </h1>
-
-            <h1
-              className="font-display text-[36px] lg:text-[58px] font-medium tracking-[-0.04em] leading-[1.02] hero-fade-up"
-              style={{ animationDelay: '0.3s' }}>
-              <RotatingText
-                texts={["Sem complicar.", "Do seu jeito.", "Agora."]}
-                rotationInterval={2400}
-                variant="slide"
-                mainClassName="font-display font-medium"
-                style={{ color: 'inherit', display: 'inline-block' }}
-              />
-            </h1>
-          </div>
-
-          {/* Subtext */}
-          <p
-            className="font-body text-[15px] leading-[1.65] text-lk-gray-400 max-w-full lg:max-w-[420px] mb-8 font-light hero-fade-up"
-            style={{ animationDelay: '400ms' }}
+          {/* Headline — dividida em 2 linhas para animar individualmente */}
+          <h1
+            className="font-display font-medium max-w-[760px]"
+            style={{
+              fontSize: 'clamp(2rem, 4.6vw, 3.2rem)',
+              lineHeight: 1.18,
+              letterSpacing: '-1.5px',
+              color: 'var(--color-lk-white)',
+            }}
           >
-            Crie uma loja bonita, organizada e com a sua cara. Suas clientes navegam, escolhem e pedem — você só confirma.
-          </p>
+            <motion.span variants={blurFadeIn} style={{ display: 'block' }}>
+              Você não precisa saber nada de tecnologia
+            </motion.span>
+            <motion.span variants={blurFadeIn} style={{ display: 'block' }}>
+              pra ter uma loja digital de verdade.
+            </motion.span>
+          </h1>
+
+          {/* RotatingText — reaproveitando o componente existente */}
+          <motion.div variants={blurFadeIn}>
+            <RotatingText
+              texts={[
+                'Catálogo organizado.',
+                'Pedidos sem bagunça.',
+                'Sua marca, do seu jeito.',
+                'Direto onde você já vende.',
+              ]}
+              variant="slide"
+              rotationInterval={2600}
+              mainClassName="font-display font-medium"
+              style={{
+                fontSize: 'clamp(2rem, 4.6vw, 3.2rem)',
+                lineHeight: 1.18,
+                letterSpacing: '-1.5px',
+                color: 'var(--color-lk-white)',
+              }}
+            />
+          </motion.div>
+
+          {/* Subheadline */}
+          <motion.p
+            variants={blurFadeIn}
+            className="font-body max-w-[520px] mt-5"
+            style={{ color: 'var(--color-lk-gray-400)', lineHeight: 1.65, fontSize: '1.05rem' }}
+          >
+            Catálogo, link único e pedidos organizados num só lugar — sua loja pronta em minutos.
+          </motion.p>
 
           {/* CTAs */}
-          <div
-            className="flex flex-wrap items-center gap-3 mb-6 hero-fade-up"
-            style={{ animationDelay: '480ms' }}
+          <motion.div
+            variants={blurFadeIn}
+            className="flex flex-wrap justify-center gap-3 mt-8"
           >
-            <a
-              href={`${APP_URL}/cadastro`}
-              className="bg-lk-white text-black font-display text-[14px] font-medium px-6 py-[14px] rounded-full flex items-center gap-2 hover:opacity-90 transition-opacity tracking-[-0.01em]"
+            <Link
+              href="/cadastro"
+              className="inline-flex items-center gap-2 font-semibold text-[15px] rounded-full px-6 py-3.5 transition-transform hover:-translate-y-0.5"
+              style={{ background: 'var(--color-lk-white)', color: '#0A0A0A' }}
             >
-              Criar minha loja grátis <span>→</span>
-            </a>
+              Criar minha loja <span>→</span>
+            </Link>
             <a
-              href={`${APP_URL}/exemplo`}
-              className="text-lk-gray-400 font-body text-[14px] px-6 py-[13px] rounded-full hover:text-lk-white transition-colors"
-              style={{ border: '1px solid rgba(249,115,22,0.35)' }}
-            >
-              Ver exemplo de loja
-            </a>
-          </div>
-
-          {/* Microcopy confiança */}
-          <div
-            className="flex items-center gap-4 hero-fade-up"
-            style={{ animationDelay: '560ms' }}
-          >
-            <span className="font-body text-[12px] text-lk-gray-500 flex items-center gap-[6px]">
-              <span className="text-lk-orange text-[11px] font-bold">✓</span>
-              Comece gratuitamente
-            </span>
-            <div className="w-[3px] h-[3px] rounded-full bg-lk-border-strong" />
-            <span className="font-body text-[12px] text-lk-gray-500 flex items-center gap-[6px]">
-              <span className="text-lk-orange text-[11px] font-bold">✓</span>
-              Sem cartão de crédito
-            </span>
-            <div className="w-[3px] h-[3px] rounded-full bg-lk-border-strong" />
-            <span className="font-body text-[12px] text-lk-gray-500 flex items-center gap-[6px]">
-              <span className="text-lk-orange text-[11px] font-bold">✓</span>
-              Cancele quando quiser
-            </span>
-          </div>
-
-        </div>
-
-        {/* RIGHT — iPhone mockup com vídeo */}
-        <div
-          className="relative z-10 hero-slide-in flex justify-center items-center"
-          style={{ animationDelay: '200ms' }}
-        >
-          {/* Glow embaixo */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              bottom: '-40px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '300px',
-              height: '120px',
-              background: 'radial-gradient(ellipse, rgba(249,115,22,0.18) 0%, transparent 70%)',
-              filter: 'blur(24px)',
-            }}
-          />
-
-          {/* 3D tilt wrapper */}
-          <div
-            style={{
-              transform: 'perspective(1100px) rotateY(-9deg) rotateX(3deg)',
-              transformOrigin: 'center center',
-              willChange: 'transform',
-              width: '350px',
-              position: 'relative',
-            }}
-          >
-            <Iphone
-              videoSrc="/phone.mp4"
-              className="w-full"
-            />
-
-            {/* Camada 1 — gradiente escuro no rodapé da tela */}
-            <div
+              href="#como-funciona"
+              className="font-semibold text-[15px] rounded-full px-6 py-3.5 transition-colors hover:opacity-80"
               style={{
-                position: 'absolute',
-                bottom: '8%',
-                left: '6%',
-                right: '6%',
-                height: '28%',
-                background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, transparent 100%)',
-                pointerEvents: 'none',
-                zIndex: 9,
-                borderRadius: '0 0 4px 4px',
-              }}
-            />
-
-            {/* Camada 2 — badge URL por cima do gradiente */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '13%',
-                right: '8%',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                background: 'rgba(0,0,0,0.75)',
-                border: '1px solid rgba(249,115,22,0.3)',
-                borderRadius: '20px',
-                padding: '5px 10px 5px 6px',
-                backdropFilter: 'blur(8px)',
-                pointerEvents: 'none',
-                zIndex: 10,
+                color: 'var(--color-lk-white)',
+                border: '1px solid rgba(249,115,22,0.4)',
               }}
             >
-              <div
-                style={{
-                  width: '14px',
-                  height: '14px',
-                  borderRadius: '3px',
-                  background: '#F97316',
-                  flexShrink: 0,
-                }}
-              />
-              <span
-                style={{
-                  fontSize: '10px',
-                  fontFamily: 'var(--font-body)',
-                  color: 'rgba(255,255,255,0.8)',
-                  letterSpacing: '0.01em',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                lookcase.io/moda-da-mari
-              </span>
-            </div>
-          </div>
-        </div>
+              Ver como funciona
+            </a>
+          </motion.div>
+
+          {/* Selos de confiança */}
+          <motion.div
+            variants={blurFadeIn}
+            className="flex flex-wrap justify-center gap-10 mt-12"
+          >
+            {[
+              { val: 'LGPD',   lbl: 'Dados protegidos' },
+              { val: 'PT-BR',  lbl: 'Suporte em português' },
+              { val: '10 min', lbl: 'Pra estar no ar' },
+            ].map((item) => (
+              <div key={item.lbl} className="flex flex-col items-center gap-1">
+                <span
+                  className="font-display font-semibold text-[1.15rem]"
+                  style={{ color: 'var(--color-lk-white)' }}
+                >
+                  {item.val}
+                </span>
+                <span
+                  className="text-[11px] uppercase tracking-wide"
+                  style={{ color: 'var(--color-lk-gray-500)' }}
+                >
+                  {item.lbl}
+                </span>
+              </div>
+            ))}
+          </motion.div>
+
+        </motion.div>
       </section>
 
 
@@ -605,7 +541,9 @@ export default function Home() {
       />
 
 
-      <FeaturesSection />
+      <div id="como-funciona">
+        <FeaturesSection />
+      </div>
 
 
       {/* ============================================================
