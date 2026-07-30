@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import RotatingText from '@/components/ui/rotating-text'
 import { LookcaseMark } from '@/components/ui/lookcase-mark'
@@ -267,7 +267,26 @@ export default function Home() {
   }, [])
 
   const [featOpen, setFeatOpen] = useState<number | null>(null)
-  const curtainIndex = featOpen ?? 0
+  const [curtainIndex, setCurtainIndex] = useState(0)
+  const curtainTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const startCurtainTimer = () => {
+    if (curtainTimer.current) clearInterval(curtainTimer.current)
+    curtainTimer.current = setInterval(() => {
+      setCurtainIndex(prev => (prev + 1) % curtainPanels.length)
+    }, 4000)
+  }
+
+  useEffect(() => {
+    startCurtainTimer()
+    return () => { if (curtainTimer.current) clearInterval(curtainTimer.current) }
+  }, [])
+
+  const handleAccordionClick = (i: number) => {
+    setFeatOpen(prev => prev === i ? null : i)
+    setCurtainIndex(i)
+    startCurtainTimer()
+  }
 
   return (
     <main className="min-h-screen bg-lk-base pt-20">
@@ -496,7 +515,7 @@ export default function Home() {
                 style={{ borderTop: i === 0 ? '1px solid var(--color-lk-border)' : 'none' }}
               >
                 <button
-                  onClick={() => setFeatOpen(featOpen === i ? null : i)}
+                  onClick={() => handleAccordionClick(i)}
                   className="w-full flex items-center justify-between gap-4 py-4 text-left"
                 >
                   <p className="font-body text-[14px] font-medium text-lk-gray-100 leading-snug">
@@ -542,7 +561,7 @@ export default function Home() {
         </div>
 
         {/* RIGHT — Curtain panel sincronizado com a lista */}
-        <div className="hidden lg:flex items-center justify-center lg:sticky lg:top-28 lg:self-start">
+        <div className="hidden lg:flex items-center justify-center lg:sticky lg:top-28 lg:w-full" style={{ alignSelf: 'start' }}>
           <div
             className="relative w-full h-[460px] overflow-hidden"
             style={{ clipPath: 'polygon(0 0, 100% 0, 91% 100%, 0 100%)' }}
