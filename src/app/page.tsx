@@ -9,10 +9,9 @@ import { Link2, Percent, Zap, Package, Share2, Palette, Shield, ClipboardList, L
 import { AnimatedList } from '@/components/ui/animated-list'
 import { FeaturesSection } from '@/components/sections/features-section'
 import { PromiseSection } from '@/components/sections/promise-section'
-import { StorefrontMockup } from '@/components/ui/storefront-mockup'
 import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { PricingSection } from '@/components/sections/pricing-section'
-import { motion, useReducedMotion } from 'motion/react'
+import { motion, useReducedMotion, AnimatePresence } from 'motion/react'
 import { LightRays } from '@/components/ui/light-rays'
 
 // URL do app (auth/dashboard/vitrine) — fica em outro repositório.
@@ -197,6 +196,14 @@ const galleryCell = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const } },
 }
 
+const curtainPanels = [
+  { text: 'Cole no Instagram, no WhatsApp, em qualquer lugar.', bg: '#FAFAF8', color: '#1A1A18' },
+  { text: 'Cada peça, com foto e preço em segundos.',           bg: '#FCE8D8', color: '#7A3B12' },
+  { text: 'Nenhum pedido se perde no meio da conversa.',        bg: '#E7EBEC', color: '#2B3436' },
+  { text: 'Sua loja com cara de marca grande.',                 bg: '#E8ECE5', color: '#33402F' },
+  { text: 'Do clique à compra, tudo num toque.',                bg: '#EFEAE4', color: '#4A4038' },
+]
+
 const heroContainer = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.18 } },
@@ -260,6 +267,7 @@ export default function Home() {
   }, [])
 
   const [featOpen, setFeatOpen] = useState<number | null>(null)
+  const curtainIndex = featOpen ?? 0
 
   return (
     <main className="min-h-screen bg-lk-base pt-20">
@@ -476,11 +484,11 @@ export default function Home() {
 
           <div className="flex flex-col mb-10">
             {[
-              { title: 'URL com o nome da sua marca',          sub: 'lookcase.com/suamarca — sem @plataforma no link' },
+              { title: 'Link só seu, fácil de compartilhar',     sub: 'Sua loja em lookcase.com/suamarca. Cole no bio, manda no WhatsApp, pronto.' },
               { title: 'Catálogo visual, sempre atualizado',   sub: 'Produtos, tamanhos e preços num só lugar' },
               { title: 'Pedidos registrados automaticamente',  sub: 'Histórico completo, sem anotar em lugar nenhum' },
               { title: 'Design profissional sem designer',     sub: 'Personalizado com as cores e identidade da sua marca' },
-              { title: 'Zero taxa por venda',                  sub: 'Cada venda é 100% sua. Sempre.' },
+              { title: 'Compra fácil, direto do celular',        sub: 'Sua cliente navega, escolhe e fecha o pedido sem sair do celular.' },
             ].map((item, i) => (
               <div
                 key={i}
@@ -495,14 +503,25 @@ export default function Home() {
                     {item.title}
                   </p>
                   <div
-                    className="w-6 h-6 rounded-full border flex items-center justify-center flex-shrink-0 transition-all duration-300"
+                    className="w-6 h-6 rounded-full border flex items-center justify-center flex-shrink-0"
                     style={{
                       color: featOpen === i ? 'var(--color-lk-orange)' : 'var(--color-lk-gray-600)',
                       borderColor: featOpen === i ? 'rgba(249,115,22,0.4)' : 'var(--color-lk-border)',
-                      transform: featOpen === i ? 'rotate(45deg)' : 'none',
+                      transition: 'color 0.3s, border-color 0.3s',
                     }}
                   >
-                    <span className="text-[16px] leading-none">+</span>
+                    <div className="relative w-[13px] h-[13px]">
+                      <span
+                        className="absolute inset-0 m-auto rounded-full bg-current"
+                        style={{ width: '13px', height: '2px' }}
+                      />
+                      <motion.span
+                        className="absolute inset-0 m-auto rounded-full bg-current"
+                        style={{ width: '13px', height: '2px' }}
+                        animate={{ rotate: featOpen === i ? 0 : 90 }}
+                        transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] as const }}
+                      />
+                    </div>
                   </div>
                 </button>
                 <div
@@ -522,9 +541,36 @@ export default function Home() {
 
         </div>
 
-        {/* RIGHT — Safari mockup da vitrine */}
-        <div className="scroll-reveal hidden lg:flex items-center justify-center" data-scroll data-scroll-delay="120">
-          <StorefrontMockup />
+        {/* RIGHT — Curtain panel sincronizado com a lista */}
+        <div className="hidden lg:flex items-center justify-center lg:sticky lg:top-28 lg:self-start">
+          <div
+            className="relative w-full h-[460px] overflow-hidden"
+            style={{ clipPath: 'polygon(0 0, 100% 0, 91% 100%, 0 100%)' }}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={curtainIndex}
+                className="absolute inset-0 flex items-center justify-center p-12"
+                style={{ background: curtainPanels[curtainIndex].bg }}
+                initial={shouldReduceMotion ? false : { clipPath: 'inset(0 100% 0 0)' }}
+                animate={{ clipPath: 'inset(0 0% 0 0)' }}
+                exit={shouldReduceMotion ? {} : { opacity: 0, transition: { duration: 0.15 } }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] as const }}
+              >
+                <p
+                  className="font-display font-bold text-center max-w-[320px]"
+                  style={{
+                    fontSize: 'clamp(1.5rem, 2.2vw, 2rem)',
+                    lineHeight: 1.25,
+                    letterSpacing: '-0.02em',
+                    color: curtainPanels[curtainIndex].color,
+                  }}
+                >
+                  {curtainPanels[curtainIndex].text}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
 
       </section>
