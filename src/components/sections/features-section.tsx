@@ -1,8 +1,9 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'motion/react'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'motion/react'
 import type { MotionValue } from 'motion/react'
+import { Iphone } from '@/components/ui/iphone'
 
 const steps = [
   {
@@ -11,6 +12,7 @@ const steps = [
     description: 'Email, nome da loja e plano. Menos de 2 minutos, sem cartão para começar.',
     tag: 'Cadastro',
     chips: ['Sem cartão de crédito', '7 dias grátis', 'Menos de 2 min'],
+    image: '/como-funciona/crie-sua-conta.jpeg' as string | null,
   },
   {
     number: '02',
@@ -18,6 +20,7 @@ const steps = [
     description: 'Adicione produtos, fotos e preços. Personalize cores e nome da sua loja do seu jeito.',
     tag: 'Configuração',
     chips: ['Produtos ilimitados', 'Fotos e descrições', 'Sua identidade'],
+    image: null as string | null,
   },
   {
     number: '03',
@@ -25,6 +28,7 @@ const steps = [
     description: 'Sua vitrine tem um link único. Suas clientes chegam, escolhem e pedem.',
     tag: 'Vendas',
     chips: ['Link exclusivo', 'Pedidos via WhatsApp', 'Sem taxas extras'],
+    image: null as string | null,
   },
 ]
 
@@ -45,68 +49,103 @@ function StepCard({
   progress: MotionValue<number>
 }) {
   const total = steps.length
-  const isLast = index === total - 1
+  const prefersReducedMotion = useReducedMotion()
+  const hasImage = Boolean(step.image)
+  const spacerRef = useRef<HTMLDivElement>(null)
+
   const scale = useTransform(progress, [index / total, (index + 1) / total], [1, 0.93])
-  const opacity = useTransform(progress, [(index + 0.5) / total, (index + 1) / total], [1, 0.55])
+
+  const { scrollYProgress: enterProgress } = useScroll({
+    target: spacerRef,
+    offset: ['start 130%', 'end start'],
+  })
+  const smooth = useSpring(enterProgress, { stiffness: 70, damping: 24, mass: 0.6 })
+  const phoneX = useTransform(smooth, [0, 0.5], [180, 0])
+  const phoneOpacity = useTransform(smooth, [0, 0.3], [0, 1])
 
   return (
-    <div
-      className="sticky"
-      style={{ top: `${88 + index * 18}px`, zIndex: 10 + index }}
-    >
-      <motion.div
-        style={
-          isLast
-            ? { ...glowBorder }
-            : { scale, opacity, transformOrigin: 'top center', ...glowBorder }
-        }
-        className="mx-auto max-w-2xl rounded-[20px] bg-lk-card overflow-hidden"
+    <>
+      <div
+        className="sticky"
+        style={{ top: `${88 + index * 18}px`, zIndex: 10 + index }}
       >
-        <div className="relative flex flex-col gap-8 px-8 py-10 lg:px-12 lg:py-12 min-h-[380px]">
-
-          {/* Glow laranja no topo */}
+        <motion.div
+          style={{
+            scale,
+            transformOrigin: 'top center',
+            ...glowBorder,
+            backgroundColor: 'var(--color-lk-card)',
+            boxShadow: '0 -40px 60px -20px rgba(0,0,0,0.55)',
+          }}
+          className="mx-auto max-w-[1200px] rounded-[32px] overflow-hidden"
+        >
           <div
-            aria-hidden
-            className="pointer-events-none select-none absolute inset-x-0 top-0 h-[90px]"
-            style={{
-              background:
-                'radial-gradient(ellipse at 50% -10%, rgba(249,115,22,0.13) 0%, transparent 80%)',
-            }}
-          />
-
-          {/* Tag */}
-          <span
-            className="relative inline-flex w-fit items-center rounded-full px-3 py-1 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-lk-gray-600"
-            style={{ border: '1px solid rgba(255,255,255,0.07)' }}
+            className={
+              hasImage
+                ? 'relative flex flex-col lg:flex-row lg:items-center gap-10 px-8 py-12 lg:px-14 lg:py-14 min-h-[460px] lg:min-h-[520px]'
+                : 'relative flex flex-col gap-8 px-8 py-10 lg:px-14 lg:py-14 min-h-[460px] lg:min-h-[520px]'
+            }
           >
-            {step.tag}
-          </span>
 
-          {/* Título e descrição */}
-          <div className="relative space-y-3">
-            <h3 className="font-display text-[34px] lg:text-[46px] font-medium tracking-[-0.03em] leading-[1.05] text-lk-white">
-              {step.title}
-            </h3>
-            <p className="font-body text-[15px] lg:text-[16px] leading-[1.75] text-lk-gray-400 max-w-sm">
-              {step.description}
-            </p>
-          </div>
+            <div
+              aria-hidden
+              className="pointer-events-none select-none absolute inset-x-0 top-0 h-[90px]"
+              style={{
+                background:
+                  'radial-gradient(ellipse at 50% -10%, rgba(249,115,22,0.13) 0%, transparent 80%)',
+              }}
+            />
 
-          {/* Chips + contador */}
-          <div className="relative mt-auto flex flex-wrap items-center gap-2">
-            {step.chips.map((chip) => (
+            <div className={hasImage ? 'relative flex flex-col gap-8 lg:w-[420px] lg:flex-shrink-0' : 'contents'}>
+
               <span
-                key={chip}
-                className="rounded-md px-2.5 py-1 font-body text-[11px] text-lk-gray-500"
+                className="relative inline-flex w-fit items-center rounded-full px-3 py-1 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-lk-gray-600"
                 style={{ border: '1px solid rgba(255,255,255,0.07)' }}
               >
-                {chip}
+                {step.tag}
               </span>
-            ))}
+
+              <div className="relative space-y-3">
+                <h3 className="font-display text-[34px] lg:text-[46px] font-medium tracking-[-0.03em] leading-[1.05] text-lk-white">
+                  {step.title}
+                </h3>
+                <p className="font-body text-[15px] lg:text-[16px] leading-[1.75] text-lk-gray-400 max-w-sm">
+                  {step.description}
+                </p>
+              </div>
+
+              <div className="relative mt-auto flex flex-wrap items-center gap-2">
+                {step.chips.map((chip) => (
+                  <span
+                    key={chip}
+                    className="rounded-md px-2.5 py-1 font-body text-[11px] text-lk-gray-500"
+                    style={{ border: '1px solid rgba(255,255,255,0.07)' }}
+                  >
+                    {chip}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {hasImage && (
+              <div className="relative flex-1 flex justify-center lg:self-center">
+                <motion.div
+                  style={
+                    prefersReducedMotion
+                      ? { width: 220 }
+                      : { width: 220, x: phoneX, opacity: phoneOpacity, willChange: 'transform' }
+                  }
+                >
+                  <Iphone src={step.image!} />
+                </motion.div>
+              </div>
+            )}
           </div>
-        </div>
-      </motion.div>
-    </div>
+        </motion.div>
+      </div>
+
+      <div ref={spacerRef} aria-hidden className="h-[55vh] pointer-events-none" />
+    </>
   )
 }
 
@@ -123,7 +162,6 @@ export function FeaturesSection() {
       ref={sectionRef}
       id="como-funciona"
       className="relative px-5 lg:px-10"
-      style={{ minHeight: '220vh' }}
     >
       <div className="pointer-events-none sticky top-0 z-50 pt-14 pb-6 lg:pt-20">
         <p className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] text-lk-gray-600 flex items-center gap-2">
