@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'motion/react'
 import type { MotionValue } from 'motion/react'
 import { Iphone } from '@/components/ui/iphone'
+import { ProductMarquee } from '@/components/ui/product-marquee'
 
 const steps = [
   {
@@ -12,6 +13,7 @@ const steps = [
     description: 'Email, nome da loja e plano. Menos de 2 minutos, sem cartão para começar.',
     image: '/como-funciona/crie-sua-conta.jpeg' as string | null,
     video: null as string | null,
+    marquee: false,
   },
   {
     number: '02',
@@ -19,6 +21,7 @@ const steps = [
     description: 'Adicione produtos, fotos e preços. Personalize cores e nome da sua loja do seu jeito.',
     image: null as string | null,
     video: '/como-funciona/monte-vitrine.mp4' as string | null,
+    marquee: false,
   },
   {
     number: '03',
@@ -26,6 +29,7 @@ const steps = [
     description: 'Sua vitrine tem um link único. Suas clientes chegam, escolhem e pedem.',
     image: null as string | null,
     video: null as string | null,
+    marquee: true,
   },
 ]
 
@@ -47,7 +51,7 @@ function StepCard({
 }) {
   const total = steps.length
   const prefersReducedMotion = useReducedMotion()
-  const hasMedia = Boolean(step.image || step.video)
+  const hasMedia = Boolean(step.image || step.video || step.marquee)
   const spacerRef = useRef<HTMLDivElement>(null)
 
   const scale = useTransform(progress, [index / total, (index + 1) / total], [1, 0.93])
@@ -123,6 +127,13 @@ function StepCard({
                       playsInline
                       className="w-full h-full object-cover"
                     />
+                  </div>
+                ) : step.marquee ? (
+                  <div
+                    className="relative rounded-[24px] overflow-hidden flex items-center w-full"
+                    style={{ maxWidth: 460, height: 300, background: '#F4F4F2' }}
+                  >
+                    <ProductMarquee />
                   </div>
                 ) : (
                   <motion.div
