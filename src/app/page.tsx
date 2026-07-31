@@ -5,7 +5,7 @@ import Link from 'next/link'
 import RotatingText from '@/components/ui/rotating-text'
 import { LookcaseMark } from '@/components/ui/lookcase-mark'
 import { Marquee, MarqueeCard } from '@/components/ui/marquee'
-import { Link2, Percent, Zap, Package, Share2, Palette, Shield, ClipboardList, Layers, Headphones, Infinity, RefreshCw, Shirt } from 'lucide-react'
+import { Link2, Percent, Zap, Package, Share2, Palette, Shield, ClipboardList, Layers, Headphones, Infinity, RefreshCw, Shirt, ArrowLeft, ArrowRight } from 'lucide-react'
 import { AnimatedList } from '@/components/ui/animated-list'
 import { FeaturesSection } from '@/components/sections/features-section'
 import { PromiseSection } from '@/components/sections/promise-section'
@@ -196,7 +196,8 @@ const galleryCell = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const } },
 }
 
-const curtainPanels = [
+const promiseSlides = [
+  { text: 'A vitrine que a sua marca sempre mereceu.',          bg: '#F1EEE6', color: '#3A362E' },
   { text: 'Cole no Instagram, no WhatsApp, em qualquer lugar.', bg: '#FAFAF8', color: '#1A1A18' },
   { text: 'Cada peça, com foto e preço em segundos.',           bg: '#FCE8D8', color: '#7A3B12' },
   { text: 'Nenhum pedido se perde no meio da conversa.',        bg: '#E7EBEC', color: '#2B3436' },
@@ -266,26 +267,24 @@ export default function Home() {
     }
   }, [])
 
-  const [featOpen, setFeatOpen] = useState<number | null>(null)
-  const [curtainIndex, setCurtainIndex] = useState(0)
-  const curtainTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const activeTimer = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const startCurtainTimer = () => {
-    if (curtainTimer.current) clearInterval(curtainTimer.current)
-    curtainTimer.current = setInterval(() => {
-      setCurtainIndex(prev => (prev + 1) % curtainPanels.length)
+  const startActiveTimer = () => {
+    if (activeTimer.current) clearInterval(activeTimer.current)
+    activeTimer.current = setInterval(() => {
+      setActiveIndex(prev => (prev + 1) % promiseSlides.length)
     }, 3200)
   }
 
   useEffect(() => {
-    startCurtainTimer()
-    return () => { if (curtainTimer.current) clearInterval(curtainTimer.current) }
+    startActiveTimer()
+    return () => { if (activeTimer.current) clearInterval(activeTimer.current) }
   }, [])
 
-  const handleAccordionClick = (i: number) => {
-    setFeatOpen(prev => prev === i ? null : i)
-    setCurtainIndex(i)
-    startCurtainTimer()
+  const goToSlide = (i: number) => {
+    setActiveIndex(i)
+    startActiveTimer()
   }
 
   return (
@@ -400,33 +399,6 @@ export default function Home() {
             </a>
           </motion.div>
 
-          {/* Selos de confiança */}
-          <motion.div
-            variants={blurFadeIn}
-            className="flex flex-wrap justify-center gap-10 mt-12"
-          >
-            {[
-              { val: 'LGPD',   lbl: 'Dados protegidos' },
-              { val: 'PT-BR',  lbl: 'Suporte em português' },
-              { val: '10 min', lbl: 'Pra estar no ar' },
-            ].map((item) => (
-              <div key={item.lbl} className="flex flex-col items-center gap-1">
-                <span
-                  className="font-display font-semibold text-[1.15rem]"
-                  style={{ color: 'var(--color-lk-white)' }}
-                >
-                  {item.val}
-                </span>
-                <span
-                  className="text-[11px] uppercase tracking-wide"
-                  style={{ color: 'var(--color-lk-gray-500)' }}
-                >
-                  {item.lbl}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-
         </motion.div>
       </section>
 
@@ -483,115 +455,83 @@ export default function Home() {
       {/* ============================================================
           SEÇÃO — PROPOSTA DE VALOR
           ============================================================ */}
-      <section id="produto" className="px-5 lg:px-10 py-16 lg:py-24 flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <section id="produto" className="px-5 lg:px-10 py-16 lg:py-24">
+        <div className="max-w-[1200px] mx-auto rounded-[28px] relative overflow-hidden scroll-reveal" data-scroll data-scroll-delay="0">
 
-        {/* LEFT — Texto aspiracional */}
-        <div className="scroll-reveal" data-scroll data-scroll-delay="0">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={activeIndex}
+              className="absolute inset-0"
+              style={{ background: promiseSlides[activeIndex].bg }}
+              initial={shouldReduceMotion ? false : { clipPath: 'inset(0 100% 0 0)' }}
+              animate={{ clipPath: 'inset(0 0% 0 0)' }}
+              exit={shouldReduceMotion ? {} : { opacity: 0, transition: { duration: 0.15 } }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] as const }}
+            />
+          </AnimatePresence>
 
-          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] flex items-center gap-2 mb-5" style={{ color: 'var(--color-lk-orange)' }}>
-            <span className="w-[6px] h-[6px] rounded-full flex-shrink-0" style={{ background: 'var(--color-lk-orange)' }} />
-            Lookcase
-          </p>
+          <div className="relative z-[1] flex flex-col items-center justify-center text-center px-6 py-20 sm:px-12 sm:py-28 min-h-[420px]">
 
-          <h2 className="font-display text-[32px] lg:text-[44px] font-medium tracking-[-0.03em] leading-[1.05] text-lk-white mb-5">
-            A vitrine que a sua marca sempre mereceu.
-          </h2>
+            <p
+              className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] flex items-center gap-2 mb-8"
+              style={{ color: promiseSlides[activeIndex].color, transition: 'color 0.4s' }}
+            >
+              <span className="w-[6px] h-[6px] rounded-full flex-shrink-0" style={{ background: 'currentColor' }} />
+              Lookcase
+            </p>
 
-          <p className="font-body text-[15px] text-lk-gray-400 leading-[1.7] max-w-[380px] mb-8">
-            Catálogo completo, pedidos organizados e identidade própria — tudo em um link que é só seu. Pronto em minutos.
-          </p>
-
-          <div className="flex flex-col mb-10">
-            {[
-              { title: 'Link só seu, fácil de compartilhar',     sub: 'Sua loja em lookcase.com/suamarca. Cole no bio, manda no WhatsApp, pronto.' },
-              { title: 'Catálogo visual, sempre atualizado',   sub: 'Produtos, tamanhos e preços num só lugar' },
-              { title: 'Pedidos registrados automaticamente',  sub: 'Histórico completo, sem anotar em lugar nenhum' },
-              { title: 'Design profissional sem designer',     sub: 'Personalizado com as cores e identidade da sua marca' },
-              { title: 'Compra fácil, direto do celular',        sub: 'Sua cliente navega, escolhe e fecha o pedido sem sair do celular.' },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="border-b border-lk-border"
-                style={{ borderTop: i === 0 ? '1px solid var(--color-lk-border)' : 'none' }}
-              >
-                <button
-                  onClick={() => handleAccordionClick(i)}
-                  className="w-full flex items-center justify-between gap-4 py-4 text-left"
-                >
-                  <p className="font-body text-[14px] font-medium text-lk-gray-100 leading-snug">
-                    {item.title}
-                  </p>
-                  <div
-                    className="w-6 h-6 rounded-full border flex items-center justify-center flex-shrink-0"
-                    style={{
-                      color: featOpen === i ? 'var(--color-lk-orange)' : 'var(--color-lk-gray-600)',
-                      borderColor: featOpen === i ? 'rgba(249,115,22,0.4)' : 'var(--color-lk-border)',
-                      transition: 'color 0.3s, border-color 0.3s',
-                    }}
-                  >
-                    <div className="relative w-[13px] h-[13px]">
-                      <span
-                        className="absolute inset-0 m-auto rounded-full bg-current"
-                        style={{ width: '13px', height: '2px' }}
-                      />
-                      <motion.span
-                        className="absolute inset-0 m-auto rounded-full bg-current"
-                        style={{ width: '13px', height: '2px' }}
-                        animate={{ rotate: featOpen === i ? 0 : 90 }}
-                        transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] as const }}
-                      />
-                    </div>
-                  </div>
-                </button>
-                <div
-                  className="overflow-hidden transition-all duration-300"
-                  style={{
-                    maxHeight: featOpen === i ? '80px' : '0px',
-                    opacity: featOpen === i ? 1 : 0,
-                  }}
-                >
-                  <p className="font-body text-[13px] text-lk-gray-500 leading-[1.6] pb-4">
-                    {item.sub}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-
-        {/* RIGHT — Curtain panel sincronizado com a lista */}
-        <div className="hidden lg:block lg:sticky lg:top-28" style={{ alignSelf: 'start' }}>
-          <div
-            className="relative w-full h-[460px] overflow-hidden"
-            style={{ clipPath: 'polygon(0 0, 100% 0, 91% 100%, 0 100%)' }}
-          >
             <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={curtainIndex}
-                className="absolute inset-0 flex items-center justify-center p-12"
-                style={{ background: curtainPanels[curtainIndex].bg }}
-                initial={shouldReduceMotion ? false : { clipPath: 'inset(0 100% 0 0)' }}
-                animate={{ clipPath: 'inset(0 0% 0 0)' }}
-                exit={shouldReduceMotion ? {} : { opacity: 0, transition: { duration: 0.15 } }}
-                transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] as const }}
+              <motion.p
+                key={activeIndex}
+                className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.2] max-w-[560px]"
+                style={{ color: promiseSlides[activeIndex].color }}
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={shouldReduceMotion ? {} : { opacity: 0, y: -12, transition: { duration: 0.2 } }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] as const }}
               >
-                <p
-                  className="font-display font-bold text-center max-w-[320px]"
-                  style={{
-                    fontSize: 'clamp(1.5rem, 2.2vw, 2rem)',
-                    lineHeight: 1.25,
-                    letterSpacing: '-0.02em',
-                    color: curtainPanels[curtainIndex].color,
-                  }}
-                >
-                  {curtainPanels[curtainIndex].text}
-                </p>
-              </motion.div>
+                {promiseSlides[activeIndex].text}
+              </motion.p>
             </AnimatePresence>
+
+            <div className="flex items-center gap-5 mt-12">
+              <button
+                onClick={() => goToSlide((activeIndex - 1 + promiseSlides.length) % promiseSlides.length)}
+                aria-label="Slide anterior"
+                className="flex items-center justify-center p-2 -m-2 transition-opacity duration-200 hover:opacity-60"
+                style={{ color: promiseSlides[activeIndex].color }}
+              >
+                <ArrowLeft size={16} />
+              </button>
+
+              <div className="flex items-center gap-2">
+                {promiseSlides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goToSlide(i)}
+                    aria-label={`Slide ${i + 1}`}
+                    className="rounded-full transition-all duration-300"
+                    style={{
+                      height: 8,
+                      width: activeIndex === i ? 24 : 8,
+                      background: activeIndex === i ? promiseSlides[activeIndex].color : `${promiseSlides[activeIndex].color}40`,
+                    }}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={() => goToSlide((activeIndex + 1) % promiseSlides.length)}
+                aria-label="Próximo slide"
+                className="flex items-center justify-center p-2 -m-2 transition-opacity duration-200 hover:opacity-60"
+                style={{ color: promiseSlides[activeIndex].color }}
+              >
+                <ArrowRight size={16} />
+              </button>
+            </div>
+
           </div>
         </div>
-
       </section>
 
 
