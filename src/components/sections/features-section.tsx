@@ -10,25 +10,22 @@ const steps = [
     number: '01',
     title: 'Crie sua conta',
     description: 'Email, nome da loja e plano. Menos de 2 minutos, sem cartão para começar.',
-    tag: 'Cadastro',
-    chips: ['Sem cartão de crédito', '7 dias grátis', 'Menos de 2 min'],
     image: '/como-funciona/crie-sua-conta.jpeg' as string | null,
+    video: null as string | null,
   },
   {
     number: '02',
     title: 'Monte sua vitrine',
     description: 'Adicione produtos, fotos e preços. Personalize cores e nome da sua loja do seu jeito.',
-    tag: 'Configuração',
-    chips: ['Produtos ilimitados', 'Fotos e descrições', 'Sua identidade'],
     image: null as string | null,
+    video: '/como-funciona/monte-vitrine.mp4' as string | null,
   },
   {
     number: '03',
     title: 'Compartilhe e venda',
     description: 'Sua vitrine tem um link único. Suas clientes chegam, escolhem e pedem.',
-    tag: 'Vendas',
-    chips: ['Link exclusivo', 'Pedidos via WhatsApp', 'Sem taxas extras'],
     image: null as string | null,
+    video: null as string | null,
   },
 ]
 
@@ -50,7 +47,7 @@ function StepCard({
 }) {
   const total = steps.length
   const prefersReducedMotion = useReducedMotion()
-  const hasImage = Boolean(step.image)
+  const hasMedia = Boolean(step.image || step.video)
   const spacerRef = useRef<HTMLDivElement>(null)
 
   const scale = useTransform(progress, [index / total, (index + 1) / total], [1, 0.93])
@@ -81,7 +78,7 @@ function StepCard({
         >
           <div
             className={
-              hasImage
+              hasMedia
                 ? 'relative flex flex-col lg:flex-row lg:items-center gap-10 px-8 py-12 lg:px-14 lg:py-14 min-h-[460px] lg:min-h-[520px]'
                 : 'relative flex flex-col gap-8 px-8 py-10 lg:px-14 lg:py-14 min-h-[460px] lg:min-h-[520px]'
             }
@@ -96,14 +93,7 @@ function StepCard({
               }}
             />
 
-            <div className={hasImage ? 'relative flex flex-col gap-8 lg:w-[420px] lg:flex-shrink-0' : 'contents'}>
-
-              <span
-                className="relative inline-flex w-fit items-center rounded-full px-3 py-1 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-lk-gray-600"
-                style={{ border: '1px solid rgba(255,255,255,0.07)' }}
-              >
-                {step.tag}
-              </span>
+            <div className={hasMedia ? 'relative flex flex-col gap-8 lg:w-[420px] lg:flex-shrink-0' : 'contents'}>
 
               <div className="relative space-y-3">
                 <h3 className="font-display text-[34px] lg:text-[46px] font-medium tracking-[-0.03em] leading-[1.05] text-lk-white">
@@ -114,30 +104,37 @@ function StepCard({
                 </p>
               </div>
 
-              <div className="relative mt-auto flex flex-wrap items-center gap-2">
-                {step.chips.map((chip) => (
-                  <span
-                    key={chip}
-                    className="rounded-md px-2.5 py-1 font-body text-[11px] text-lk-gray-500"
-                    style={{ border: '1px solid rgba(255,255,255,0.07)' }}
-                  >
-                    {chip}
-                  </span>
-                ))}
-              </div>
             </div>
 
-            {hasImage && (
+            {hasMedia && (
               <div className="relative flex-1 flex justify-center lg:self-center">
-                <motion.div
-                  style={
-                    prefersReducedMotion
-                      ? { width: 220 }
-                      : { width: 220, x: phoneX, opacity: phoneOpacity, willChange: 'transform' }
-                  }
-                >
-                  <Iphone src={step.image!} />
-                </motion.div>
+                {step.video ? (
+                  <div
+                    className="relative rounded-[24px] overflow-hidden aspect-square"
+                    style={{
+                      width: 340,
+                    }}
+                  >
+                    <video
+                      src={step.video}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <motion.div
+                    style={
+                      prefersReducedMotion
+                        ? { width: 220 }
+                        : { width: 220, x: phoneX, opacity: phoneOpacity, willChange: 'transform' }
+                    }
+                  >
+                    <Iphone src={step.image!} />
+                  </motion.div>
+                )}
               </div>
             )}
           </div>
