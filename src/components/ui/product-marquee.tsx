@@ -4,10 +4,10 @@ import { useRef, useState } from 'react'
 import { motion, useMotionValue, useAnimationFrame, useReducedMotion } from 'motion/react'
 
 const PRODUCTS = [
-  { name: 'Conjunto Urban', price: 'R$ 189', img: '/marquee/produto-1.jpg' },
-  { name: 'Camisa Listrada', price: 'R$ 234', img: '/marquee/produto-2.jpg' },
-  { name: 'Vestido Midi', price: 'R$ 149', img: '/marquee/produto-3.jpg' },
-  { name: 'Conjunto Linho', price: 'R$ 219', img: '/marquee/produto-4.jpg' },
+  { name: 'Tênis Street Jeans', price: 'R$ 259', img: '/marquee/produto-1.jpg' },
+  { name: 'iPhone Premium', price: 'R$ 199', img: '/marquee/produto-2.jpg' },
+  { name: 'Boné Premium', price: 'R$ 89', img: '/marquee/produto-3.jpg' },
+  { name: 'Smartwatch Sport', price: 'R$ 219', img: '/marquee/produto-4.jpg' },
 ]
 
 const CARD_WIDTH = 220
