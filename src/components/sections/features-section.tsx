@@ -172,11 +172,18 @@ export function FeaturesSection() {
     offset: ['start start', 'end end'],
   })
 
+  const bgColor = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.38, 0.55, 0.7, 1],
+    ['#180D06', '#5A3316', '#E2954F', '#5A3316', '#000000', '#000000']
+  )
+
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       id="como-funciona"
       className="relative px-5 lg:px-10"
+      style={{ backgroundColor: bgColor }}
     >
       <div className="pointer-events-none sticky top-0 z-50 pt-14 pb-6 lg:pt-20">
         <p className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] text-lk-gray-600 flex items-center gap-2">
@@ -193,6 +200,6 @@ export function FeaturesSection() {
           progress={scrollYProgress}
         />
       ))}
-    </section>
+    </motion.section>
   )
 }
