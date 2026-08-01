@@ -64,6 +64,9 @@ function StepCard({
   const phoneX = useTransform(smooth, [0, 0.5], [180, 0])
   const phoneOpacity = useTransform(smooth, [0, 0.3], [0, 1])
 
+  const marqueeY = useTransform(smooth, [0, 0.5], [40, 0])
+  const marqueeOpacity = useTransform(smooth, [0, 0.3], [0, 1])
+
   return (
     <>
       <div
@@ -129,12 +132,16 @@ function StepCard({
                     />
                   </div>
                 ) : step.marquee ? (
-                  <div
+                  <motion.div
                     className="relative rounded-[24px] overflow-hidden flex items-center w-full"
-                    style={{ maxWidth: 460, height: 300, background: '#F4F4F2' }}
+                    style={
+                      prefersReducedMotion
+                        ? { maxWidth: 460, height: 300, background: '#F4F4F2' }
+                        : { maxWidth: 460, height: 300, background: '#F4F4F2', y: marqueeY, opacity: marqueeOpacity, willChange: 'transform' }
+                    }
                   >
                     <ProductMarquee />
-                  </div>
+                  </motion.div>
                 ) : (
                   <motion.div
                     style={
