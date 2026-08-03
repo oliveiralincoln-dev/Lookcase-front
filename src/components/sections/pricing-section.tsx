@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import { DiaTextReveal } from '@/components/ui/dia-text-reveal'
+import { VerticalCutReveal } from '@/components/ui/vertical-cut-reveal'
 
 // URL do app (auth/dashboard/vitrine) — fica em outro repositório.
 // Placeholder até o domínio próprio existir; trocar via env var na Vercel quando mudar.
@@ -38,32 +39,69 @@ const itemVariants = {
   }),
 }
 
+const revealVariants = {
+  hidden: { opacity: 0, y: 16, filter: 'blur(8px)' },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.7, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+}
+
+const cardRevealVariants = {
+  hidden: { y: 28, filter: 'blur(12px)' },
+  visible: (i: number) => ({
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.65, delay: i * 0.18, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+}
+
 export function PricingSection() {
   const [active, setActive] = useState<'basic' | 'pro'>('pro')
 
   return (
     <section id="planos" className="px-5 lg:px-10 py-14 lg:py-20">
 
-      <p
+      <motion.p
+        custom={0}
+        variants={revealVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
         className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] flex items-center gap-2 mb-5"
         style={{ color: 'var(--color-lk-gray-600)' }}
       >
         <span className="block w-[18px] h-[1px]" style={{ background: 'var(--color-lk-gray-600)' }} />
         Planos
-      </p>
+      </motion.p>
 
       <h2 className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.05] mb-2">
-        Simples e transparente.
+        <VerticalCutReveal text="Simples e transparente." />
       </h2>
-      <p className="font-body text-[15px] mb-12" style={{ color: 'var(--color-lk-gray-500)' }}>
+      <motion.p
+        custom={1}
+        variants={revealVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="font-body text-[15px] mb-12"
+        style={{ color: 'var(--color-lk-gray-500)' }}
+      >
         Sem taxa por venda. Sem surpresa na fatura.
-      </p>
+      </motion.p>
 
       <div className="max-w-3xl mx-auto flex gap-3 items-stretch">
 
         {/* ── BASIC ── */}
         <motion.div
           layout
+          custom={0}
+          variants={cardRevealVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
           onClick={() => setActive('basic')}
           style={{
             flex: active === 'basic' ? '1.6 1 0%' : '0.8 1 0%',
@@ -147,6 +185,11 @@ export function PricingSection() {
         {/* ── PRO ── */}
         <motion.div
           layout
+          custom={1}
+          variants={cardRevealVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
           onClick={() => setActive('pro')}
           style={{
             flex: active === 'pro' ? '1.6 1 0%' : '0.8 1 0%',
