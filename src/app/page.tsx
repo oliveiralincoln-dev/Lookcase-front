@@ -192,8 +192,8 @@ const galleryContainer = {
 }
 
 const galleryCell = {
-  hidden: { opacity: 0, scale: 0.94 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const } },
+  hidden: { opacity: 0, scale: 0.94, y: 10, filter: 'blur(8px)' },
+  visible: { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
 }
 
 const promiseSlides = [
@@ -381,7 +381,7 @@ export default function Home() {
             className="flex flex-wrap justify-center gap-3 mt-8"
           >
             <Link
-              href="/cadastro"
+              href={`${APP_URL}/cadastro`}
               className="inline-flex items-center gap-2 font-semibold text-[15px] rounded-full px-6 py-3.5 transition-transform hover:-translate-y-0.5"
               style={{ background: 'var(--color-lk-white)', color: '#0A0A0A' }}
             >
@@ -598,41 +598,32 @@ export default function Home() {
               className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] text-lk-gray-600 flex items-center gap-2 mb-5"
             >
               <span className="block w-[18px] h-[1px] bg-lk-gray-600" />
-              O que muda
+              Benefícios
             </motion.p>
 
             <motion.h2
               variants={fadeUp}
               className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.05] mb-10"
             >
-              Sua loja do jeito que merece.
+              Por que escolher a Lookcase?
             </motion.h2>
 
-            <div className="flex flex-col gap-2 mb-10">
-              {[
-                'Seus produtos com foto, preço e tamanho — sempre visíveis.',
-                'Pedido com resumo completo direto no WhatsApp.',
-                'Produto esgotado sinalizado automaticamente.',
-                'Um link profissional que representa sua marca de verdade.',
-                'Sua vitrine aberta 24h, mesmo quando você está offline.',
-                'Sua marca crescendo com cada venda.',
-              ].map((result, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeUp}
-                  className="group py-3 px-4 transition-all duration-200"
-                  style={{
-                    borderLeft: '2px solid var(--color-lk-border)',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.borderLeftColor = 'var(--color-lk-orange)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderLeftColor = 'var(--color-lk-border)')}
-                >
-                  <p className="font-body text-[14px] font-medium text-lk-gray-100 leading-snug">
-                    {result}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+            <motion.p
+              variants={fadeUp}
+              className="font-body text-[15px] leading-[1.7] text-lk-gray-400 max-w-[440px] mb-8"
+            >
+              Menos tempo mexendo em sistema, mais tempo vendendo: pedido organizado num só lugar, produto editado em segundos, venda acompanhada em tempo real. Tudo direto do celular, sem precisar de curso nem manual pra entender.
+            </motion.p>
+
+            <motion.div variants={fadeUp}>
+              <Link
+                href={`${APP_URL}/cadastro`}
+                className="inline-flex items-center gap-2 font-semibold text-[15px] rounded-full px-6 py-3.5 transition-transform hover:-translate-y-0.5"
+                style={{ background: 'var(--color-lk-white)', color: '#0A0A0A' }}
+              >
+                Criar minha loja <span>→</span>
+              </Link>
+            </motion.div>
 
           </motion.div>
 
