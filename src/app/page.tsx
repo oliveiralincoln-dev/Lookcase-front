@@ -10,8 +10,7 @@ import { AnimatedList } from '@/components/ui/animated-list'
 import { FeaturesSection } from '@/components/sections/features-section'
 import { PromiseSection } from '@/components/sections/promise-section'
 import { TestimonialsSection } from '@/components/sections/testimonials-section'
-import { motion, useReducedMotion, AnimatePresence } from 'motion/react'
-import { LightRays } from '@/components/ui/light-rays'
+import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from 'motion/react'
 
 // URL do app (auth/dashboard/vitrine) — fica em outro repositório.
 // Placeholder até o domínio próprio existir; trocar via env var na Vercel quando mudar.
@@ -215,6 +214,110 @@ const heroContainer = {
 const blurFadeIn = {
   hidden: { opacity: 0, filter: 'blur(6px)' },
   visible: { opacity: 1, filter: 'blur(0px)', transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as const } },
+}
+
+function CTAFinalSection() {
+  const shouldReduceMotion = useReducedMotion()
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  })
+
+  const smooth = useSpring(scrollYProgress, { stiffness: 80, damping: 26, mass: 0.5 })
+
+  // Luz laranja: nasce pequena e distante, cresce ate cobrir a tela
+  const glowSize = useTransform(smooth, [0, 0.55, 1], ['16vmax', '90vmax', '260vmax'])
+  const glowBlurValue = useTransform(smooth, [0, 0.7, 1], [90, 60, 0])
+  const glowBlur = useMotionTemplate`blur(${glowBlurValue}px)`
+  const glowRadius = useTransform(smooth, [0, 0.78, 1], ['50%', '50%', '0%'])
+
+  // Texto entra cedo, e inverte de claro pra escuro quando o fundo vira laranja solido
+  const contentOpacity = useTransform(smooth, [0, 0.35], [0, 1])
+  const contentY = useTransform(smooth, [0, 0.35], [18, 0])
+  const headingColor = useTransform(smooth, [0.72, 0.86], ['#FFFFFF', '#1A1A18'])
+  const subColor = useTransform(smooth, [0.72, 0.86], ['rgba(255,255,255,0.55)', 'rgba(26,26,24,0.72)'])
+  const btnBg = useTransform(smooth, [0.72, 0.86], ['#FFFFFF', '#1A1A18'])
+  const btnColor = useTransform(smooth, [0.72, 0.86], ['#000000', '#FFFFFF'])
+
+  return (
+    <div ref={containerRef} style={{ height: '220vh', position: 'relative' }}>
+      <section
+        className="px-5 lg:px-10 text-center relative overflow-hidden flex items-center justify-center"
+        style={{
+          background: '#000000',
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          zIndex: 1,
+        }}
+      >
+        <motion.div
+          aria-hidden
+          className="pointer-events-none"
+          style={
+            shouldReduceMotion
+              ? {
+                  position: 'absolute',
+                  inset: 0,
+                  background: '#F97035',
+                }
+              : {
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  x: '-50%',
+                  y: '-50%',
+                  width: glowSize,
+                  height: glowSize,
+                  background: '#F97035',
+                  borderRadius: glowRadius,
+                  filter: glowBlur,
+                  willChange: 'width, height, filter',
+                }
+          }
+        />
+
+        <motion.div
+          className="relative z-10 max-w-2xl mx-auto"
+          style={
+            shouldReduceMotion
+              ? { opacity: 1 }
+              : { opacity: contentOpacity, y: contentY }
+          }
+        >
+          <motion.h2
+            className="font-display text-[36px] lg:text-[56px] font-medium tracking-[-0.04em] leading-[1.05] mb-5"
+            style={shouldReduceMotion ? { color: '#1A1A18' } : { color: headingColor }}
+          >
+            Sua vitrine está esperando por você.
+          </motion.h2>
+
+          <motion.p
+            className="font-body text-[15px] leading-[1.65] mb-8 max-w-[400px] mx-auto"
+            style={shouldReduceMotion ? { color: 'rgba(26,26,24,0.72)' } : { color: subColor }}
+          >
+            Um link com a sua cara, os seus produtos e a sua marca. Lookcase cuida do resto.
+          </motion.p>
+
+          <motion.div
+            className="inline-block"
+            style={shouldReduceMotion ? { background: '#1A1A18', borderRadius: 999 } : { background: btnBg, borderRadius: 999 }}
+          >
+            <Link href={`${APP_URL}/cadastro`} className="block">
+              <motion.span
+                className="inline-flex items-center gap-2 font-display text-[15px] lg:text-[16px] font-semibold px-10 py-[16px] rounded-full hover:opacity-90 transition-opacity tracking-[-0.01em]"
+                style={shouldReduceMotion ? { color: '#FFFFFF' } : { color: btnColor }}
+              >
+                Criar minha loja grátis →
+              </motion.span>
+            </Link>
+          </motion.div>
+        </motion.div>
+      </section>
+    </div>
+  )
 }
 
 export default function Home() {
@@ -664,48 +767,7 @@ export default function Home() {
           CTA FINAL
           ============================================================ */}
       <div style={{ position: 'relative', isolation: 'isolate' }}>
-      <section
-        className="px-5 lg:px-10 py-20 lg:py-32 text-center relative overflow-hidden"
-        style={{ background: 'var(--color-lk-base)', zIndex: 1 }}
-      >
-
-        <LightRays />
-
-        <motion.div
-          className="relative z-10 max-w-2xl mx-auto"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '0px 0px -24px 0px' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-
-          <h2 className="font-display text-[36px] lg:text-[56px] font-medium tracking-[-0.04em] leading-[1.05] mb-5">
-            Sua vitrine está esperando por você.
-          </h2>
-
-          <p className="font-body text-[15px] text-lk-gray-500 leading-[1.65] mb-8 max-w-[400px] mx-auto">
-            Um link com a sua cara, os seus produtos e a sua marca. Lookcase cuida do resto.
-          </p>
-
-          <div className="relative inline-block mb-8">
-            <div
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{
-                background: 'rgba(249,115,22,0.15)',
-                filter: 'blur(20px)',
-                transform: 'scale(1.25)',
-              }}
-            />
-            <Link
-              href={`${APP_URL}/cadastro`}
-              className="relative inline-flex items-center gap-2 bg-lk-white text-black font-display text-[15px] lg:text-[16px] font-semibold px-10 py-[16px] rounded-full hover:opacity-90 transition-opacity tracking-[-0.01em]"
-            >
-              Criar minha loja grátis →
-            </Link>
-          </div>
-
-        </motion.div>
-      </section>
+      <CTAFinalSection />
 
 
       {/* ============================================================
