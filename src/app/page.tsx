@@ -72,18 +72,21 @@ function NotificationItem({ icon, title, desc, time }: {
 }
 
 function FAQSection() {
-  const [open, setOpen] = useState<number | null>(null)
+  const [openItems, setOpenItems] = useState<Set<number>>(new Set())
+
+  const toggleItem = (i: number) => {
+    setOpenItems(prev => {
+      const next = new Set(prev)
+      if (next.has(i)) next.delete(i)
+      else next.add(i)
+      return next
+    })
+  }
 
   return (
     <section id="faq" className="px-5 lg:px-10 py-14 lg:py-20">
 
       <div className="max-w-3xl mx-auto">
-        <p className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] text-lk-gray-600 flex items-center justify-center gap-2 mb-5">
-          <span className="block w-[18px] h-[1px] bg-lk-gray-600" />
-          Dúvidas
-          <span className="block w-[18px] h-[1px] bg-lk-gray-600" />
-        </p>
-
         <h2 className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.05] mb-12 text-center">
           Perguntas frequentes.
         </h2>
@@ -95,19 +98,19 @@ function FAQSection() {
               className="rounded-xl overflow-hidden"
               style={{
                 background: 'var(--color-lk-card)',
-                border: open === i
+                border: openItems.has(i)
                   ? '1px solid rgba(249,115,22,0.25)'
                   : '1px solid var(--color-lk-border)',
                 transition: 'border-color 0.2s ease',
               }}
             >
               <button
-                onClick={() => setOpen(open === i ? null : i)}
+                onClick={() => toggleItem(i)}
                 className="w-full flex items-center justify-between gap-6 px-5 py-[18px] text-left"
               >
                 <p
                   className="font-display text-[15px] font-medium tracking-[-0.01em] transition-colors duration-200"
-                  style={{ color: open === i ? 'var(--color-lk-white)' : 'var(--color-lk-gray-100)' }}
+                  style={{ color: openItems.has(i) ? 'var(--color-lk-white)' : 'var(--color-lk-gray-100)' }}
                 >
                   {item.q}
                 </p>
@@ -115,11 +118,11 @@ function FAQSection() {
                 <div
                   className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{
-                    border: open === i
+                    border: openItems.has(i)
                       ? '1px solid rgba(249,115,22,0.35)'
                       : '1px solid var(--color-lk-border-strong)',
-                    color: open === i ? 'var(--color-lk-orange)' : 'var(--color-lk-gray-500)',
-                    transform: open === i ? 'rotate(45deg)' : 'rotate(0deg)',
+                    color: openItems.has(i) ? 'var(--color-lk-orange)' : 'var(--color-lk-gray-500)',
+                    transform: openItems.has(i) ? 'rotate(45deg)' : 'rotate(0deg)',
                     transition: 'transform 0.3s ease, border-color 0.2s ease, color 0.2s ease',
                   }}
                 >
@@ -130,8 +133,8 @@ function FAQSection() {
               <div
                 className="overflow-hidden"
                 style={{
-                  maxHeight: open === i ? '240px' : '0px',
-                  opacity: open === i ? 1 : 0,
+                  maxHeight: openItems.has(i) ? '240px' : '0px',
+                  opacity: openItems.has(i) ? 1 : 0,
                   transition: 'max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease',
                 }}
               >
