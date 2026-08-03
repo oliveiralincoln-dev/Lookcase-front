@@ -663,18 +663,21 @@ export default function Home() {
       {/* ============================================================
           CTA FINAL
           ============================================================ */}
-      <section className="px-5 lg:px-10 py-20 lg:py-32 text-center relative overflow-hidden">
+      <div style={{ position: 'relative', isolation: 'isolate' }}>
+      <section
+        className="px-5 lg:px-10 py-20 lg:py-32 text-center relative overflow-hidden"
+        style={{ background: 'var(--color-lk-base)', zIndex: 1 }}
+      >
 
         <LightRays />
 
-        <div className="scroll-reveal relative z-10 max-w-2xl mx-auto" data-scroll data-scroll-delay="0">
-
-          {/* Label da seção */}
-          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] text-lk-gray-600 flex items-center justify-center gap-2 mb-6">
-            <span className="block w-[18px] h-[1px] bg-lk-gray-600" />
-            Comece agora
-            <span className="block w-[18px] h-[1px] bg-lk-gray-600" />
-          </p>
+        <motion.div
+          className="relative z-10 max-w-2xl mx-auto"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '0px 0px -24px 0px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
 
           <h2 className="font-display text-[36px] lg:text-[56px] font-medium tracking-[-0.04em] leading-[1.05] mb-5">
             Sua vitrine está esperando por você.
@@ -701,31 +704,14 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Perks */}
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            {[
-              '7 dias grátis',
-              'Sem cartão de crédito',
-              'Cancele quando quiser',
-            ].map((perk) => (
-              <span
-                key={perk}
-                className="font-body text-[12px] text-lk-gray-600 flex items-center gap-[6px]"
-              >
-                <span className="text-lk-gray-500 text-[10px] font-bold">✓</span>
-                {perk}
-              </span>
-            ))}
-          </div>
-
-        </div>
+        </motion.div>
       </section>
 
 
       {/* ============================================================
           FOOTER
           ============================================================ */}
-      <footer className="border-t border-lk-border">
+      <footer className="border-t border-lk-border" style={{ position: 'sticky', bottom: 0, zIndex: -1 }}>
 
         {/* Corpo do footer */}
         <div className="px-5 lg:px-10 py-10 lg:py-12 flex flex-col lg:grid lg:[grid-template-columns:1.2fr_1fr_1fr] gap-8 lg:gap-12">
@@ -805,6 +791,7 @@ export default function Home() {
         </div>
 
       </footer>
+      </div>
 
     </main>
   )
