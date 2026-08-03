@@ -64,19 +64,6 @@ export function PricingSection() {
   return (
     <section id="planos" className="px-5 lg:px-10 py-14 lg:py-20">
 
-      <motion.p
-        custom={0}
-        variants={revealVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] flex items-center gap-2 mb-5"
-        style={{ color: 'var(--color-lk-gray-600)' }}
-      >
-        <span className="block w-[18px] h-[1px]" style={{ background: 'var(--color-lk-gray-600)' }} />
-        Planos
-      </motion.p>
-
       <h2 className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.05] mb-2">
         <VerticalCutReveal text="Simples e transparente." />
       </h2>
@@ -86,10 +73,10 @@ export function PricingSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="font-body text-[15px] mb-12"
+        className="font-body text-[15px] mb-10"
         style={{ color: 'var(--color-lk-gray-500)' }}
       >
-        Sem taxa por venda. Sem surpresa na fatura.
+        Um valor fixo por mês, sem surpresa na fatura. Você sabe exatamente quanto vai pagar, sempre.
       </motion.p>
 
       <div className="max-w-3xl mx-auto flex gap-3 items-stretch">
@@ -292,14 +279,6 @@ export function PricingSection() {
         </motion.div>
 
       </div>
-
-      <p
-        className="font-body text-[13px] mt-8 flex items-center gap-2 max-w-3xl mx-auto"
-        style={{ color: 'var(--color-lk-gray-600)' }}
-      >
-        <span className="text-[11px] font-bold" style={{ color: 'var(--color-lk-gray-600)' }}>✓</span>
-        7 dias grátis em qualquer plano · Sem cartão de crédito · Cancele quando quiser
-      </p>
 
     </section>
   )

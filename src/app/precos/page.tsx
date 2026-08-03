@@ -8,7 +8,12 @@ export const metadata: Metadata = {
 
 export default function PrecosPage() {
   return (
-    <main className="min-h-screen bg-lk-base pt-20">
+    <main
+      className="min-h-screen pt-20"
+      style={{
+        background: 'linear-gradient(180deg, #170D06 0%, #170D06 6%, #F97316 22%, #FCE8D8 30%, #7A3B12 48%, #0A0A0A 68%, #0A0A0A 100%)',
+      }}
+    >
       <PricingSection />
     </main>
   )
