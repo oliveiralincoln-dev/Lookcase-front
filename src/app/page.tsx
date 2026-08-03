@@ -221,53 +221,6 @@ export default function Home() {
 
   const shouldReduceMotion = useReducedMotion()
 
-  // Scroll reveal — observa todos [data-scroll]
-  useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>('[data-scroll]')
-
-    const reveal = (el: HTMLElement) => {
-      const delay = parseInt(el.dataset.scrollDelay || '0')
-      setTimeout(() => el.classList.add('scroll-visible'), delay)
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            reveal(entry.target as HTMLElement)
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0, rootMargin: '0px 0px -24px 0px' }
-    )
-
-    // Elementos já visíveis no viewport inicial — revelar imediatamente
-    requestAnimationFrame(() => {
-      els.forEach(el => {
-        const rect = el.getBoundingClientRect()
-        if (rect.top < window.innerHeight - 24 && rect.bottom > 0) {
-          reveal(el)
-        } else {
-          observer.observe(el)
-        }
-      })
-    })
-
-    // Fallback de segurança: revelar tudo que ainda estiver oculto após 1.8s
-    const fallback = setTimeout(() => {
-      els.forEach(el => {
-        if (!el.classList.contains('scroll-visible')) {
-          el.classList.add('scroll-visible')
-        }
-      })
-    }, 1800)
-
-    return () => {
-      observer.disconnect()
-      clearTimeout(fallback)
-    }
-  }, [])
 
   const [activeIndex, setActiveIndex] = useState(0)
   const activeTimer = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -458,7 +411,13 @@ export default function Home() {
           SEÇÃO — PROPOSTA DE VALOR
           ============================================================ */}
       <section id="produto" className="px-5 lg:px-10 py-16 lg:py-24">
-        <div className="max-w-[1200px] mx-auto rounded-[28px] relative overflow-hidden scroll-reveal" data-scroll data-scroll-delay="0">
+        <motion.div
+          className="max-w-[1200px] mx-auto rounded-[28px] relative overflow-hidden"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '0px 0px -24px 0px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
 
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
@@ -533,7 +492,7 @@ export default function Home() {
             </div>
 
           </div>
-        </div>
+        </motion.div>
       </section>
 
 
