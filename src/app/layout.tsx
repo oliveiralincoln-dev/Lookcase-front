@@ -30,6 +30,7 @@ const instrumentSerif = Instrument_Serif({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lookcase.app.br"),
   title: "Lookcase — Vitrine digital para sua loja de roupas",
   description:
     "Crie uma loja online profissional em menos de 10 minutos. Suas clientes navegam, escolhem e pedem pelo WhatsApp — você só confirma. Sem taxa por venda.",
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     title: "Lookcase — Vitrine digital para sua loja de roupas",
     description:
       "Crie uma loja profissional em 10 minutos. Suas clientes navegam e pedem pelo WhatsApp — você só confirma. 7 dias grátis, sem cartão.",
-    url: "https://lookcase.io",
+    url: "https://lookcase.app.br",
     siteName: "Lookcase",
     locale: "pt_BR",
     type: "website",
