@@ -10,7 +10,6 @@ import { AnimatedList } from '@/components/ui/animated-list'
 import { FeaturesSection } from '@/components/sections/features-section'
 import { PromiseSection } from '@/components/sections/promise-section'
 import { TestimonialsSection } from '@/components/sections/testimonials-section'
-import { PricingSection } from '@/components/sections/pricing-section'
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react'
 import { LightRays } from '@/components/ui/light-rays'
 
@@ -677,23 +676,6 @@ export default function Home() {
           SEÇÃO — DEPOIMENTOS
           ============================================================ */}
       <TestimonialsSection />
-
-
-      {/* ============================================================
-          DIVISOR
-          ============================================================ */}
-      <div
-        style={{
-          height: '1px',
-          background: 'linear-gradient(90deg, transparent, var(--color-lk-border) 20%, var(--color-lk-border) 80%, transparent)',
-        }}
-      />
-
-
-      {/* ============================================================
-          SEÇÃO — PLANOS
-          ============================================================ */}
-      <PricingSection />
 
 
       {/* ============================================================
