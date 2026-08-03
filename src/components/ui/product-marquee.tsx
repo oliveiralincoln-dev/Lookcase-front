@@ -5,7 +5,7 @@ import { motion, useMotionValue, useAnimationFrame, useReducedMotion } from 'mot
 
 const PRODUCTS = [
   { name: 'Tênis Street Jeans', price: 'R$ 259', img: '/marquee/produto-1.jpg' },
-  { name: 'iPhone Premium', price: 'R$ 199', img: '/marquee/produto-2.jpg' },
+  { name: 'iPhone Premium', price: 'R$ 2.499', img: '/marquee/produto-2.jpg' },
   { name: 'Boné Premium', price: 'R$ 89', img: '/marquee/produto-3.jpg' },
   { name: 'Smartwatch Sport', price: 'R$ 219', img: '/marquee/produto-4.jpg' },
 ]
