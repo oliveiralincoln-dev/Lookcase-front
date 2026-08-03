@@ -175,7 +175,7 @@ export function FeaturesSection() {
   const bgColor = useTransform(
     scrollYProgress,
     [0, 0.2, 0.38, 0.55, 0.7, 1],
-    ['#180D06', '#5A3316', '#E2954F', '#5A3316', '#000000', '#000000']
+    ['#0A0A0A', '#7A3B12', '#C2410C', '#7A3B12', '#000000', '#000000']
   )
 
   return (
