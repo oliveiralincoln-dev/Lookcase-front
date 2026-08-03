@@ -185,13 +185,6 @@ export function FeaturesSection() {
       className="relative px-5 lg:px-10"
       style={{ backgroundColor: bgColor }}
     >
-      <div className="pointer-events-none sticky top-0 z-50 pt-14 pb-6 lg:pt-20">
-        <p className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] text-lk-gray-600 flex items-center gap-2">
-          <span className="block h-px w-[18px] bg-lk-gray-600" />
-          Como funciona
-        </p>
-      </div>
-
       {steps.map((step, i) => (
         <StepCard
           key={step.number}

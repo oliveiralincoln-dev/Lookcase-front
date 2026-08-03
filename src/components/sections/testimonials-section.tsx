@@ -62,11 +62,6 @@ export function TestimonialsSection() {
 
         {/* LEFT — título + navegação */}
         <div>
-          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.1em] text-lk-gray-600 flex items-center gap-2 mb-5">
-            <span className="block w-[18px] h-[1px] bg-lk-gray-600" />
-            Depoimentos
-          </p>
-
           <h2 className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.05] mb-2">
             Quem usa, não volta<br />
             <span className="text-lk-gray-500">pro improviso de antes.</span>
