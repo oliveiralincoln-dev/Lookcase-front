@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { LookcaseMark } from '@/components/ui/lookcase-mark'
 
 // URL do app (auth/dashboard/vitrine) — fica em outro repositório.
@@ -12,19 +13,19 @@ const SECTIONS = [
   'produto',
   'como-funciona',
   'o-que-muda',
-  'planos',
   'faq',
 ]
 
 const NAV_LINKS = [
-  { href: '#produto',      label: 'Produto',         section: 'produto'      },
-  { href: '#como-funciona', label: 'Como funciona',  section: 'como-funciona' },
-  { href: '#o-que-muda',   label: 'Benefícios',      section: 'o-que-muda'   },
-  { href: '#planos',       label: 'Preços',           section: 'planos'       },
-  { href: '#faq',          label: 'FAQ',              section: 'faq'          },
+  { href: '/#produto',      label: 'Produto',         section: 'produto'      },
+  { href: '/#como-funciona', label: 'Como funciona',  section: 'como-funciona' },
+  { href: '/#o-que-muda',   label: 'Benefícios',      section: 'o-que-muda'   },
+  { href: '/precos',        label: 'Preços',           section: 'planos'       },
+  { href: '/#faq',          label: 'FAQ',              section: 'faq'          },
 ]
 
 export default function Navbar() {
+  const pathname = usePathname()
   const [activeSection, setActiveSectionState] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [pillStyle, setPillStyle] = useState<React.CSSProperties>({})
@@ -80,11 +81,21 @@ export default function Navbar() {
 
     window.addEventListener('scroll', onScroll, { passive: true })
     requestAnimationFrame(() => {
-      updateFromScroll()
-      if (itemRefs.current[0]) placePill(0)
+      if (pathname === '/precos') {
+        setActive('planos')
+      } else {
+        updateFromScroll()
+        if (itemRefs.current[0]) placePill(0)
+      }
     })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [setActive, placePill])
+  }, [setActive, placePill, pathname])
+
+  useEffect(() => {
+    if (pathname === '/precos') {
+      setActive('planos')
+    }
+  }, [pathname, setActive])
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 lg:px-24 py-4">
