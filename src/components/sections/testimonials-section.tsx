@@ -57,7 +57,7 @@ export function TestimonialsSection() {
   const next = () => setActiveIndex(i => (i + 1) % TESTIMONIALS.length)
 
   return (
-    <section id="depoimentos" className="px-5 lg:px-10 py-14 lg:py-20">
+    <section id="depoimentos" className="px-5 lg:px-10 py-14 lg:py-20 overflow-x-hidden">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
         {/* LEFT — título + navegação */}
