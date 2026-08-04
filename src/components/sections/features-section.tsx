@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'motion/react'
 import type { MotionValue } from 'motion/react'
 import { Iphone } from '@/components/ui/iphone'
@@ -169,38 +169,36 @@ function StepCard({
 export function FeaturesSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
-  // Abaixo de 1024px o fundo animado (repaint contínuo da section inteira) causa
-  // tremor no Android/Chrome. Detectamos via matchMedia e trocamos por uma cor
-  // estática. Inicia em `false` (desktop) e só muda após o mount, para não gerar
-  // mismatch de hidratação no Next.
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const mql = window.matchMedia('(max-width: 1023px)')
-    setIsMobile(mql.matches)
-    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mql.addEventListener('change', onChange)
-    return () => mql.removeEventListener('change', onChange)
-  }, [])
-
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end'],
   })
 
-  const bgColor = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.38, 0.55, 0.7, 1],
-    ['#0A0A0A', '#7A3B12', '#C2410C', '#7A3B12', '#000000', '#000000']
-  )
+  // Fundo por cross-fade de camadas: animar `opacity` é composited (a GPU só mistura
+  // camadas já rasterizadas), enquanto animar `backgroundColor` forçava repaint da
+  // section inteira a cada frame — causa confirmada do tremor no Android.
+  // Mesma paleta e mesmos breakpoints de antes; cada camada acende/apaga sobre o
+  // MESMO scrollYProgress. Base #0A0A0A sempre opaca; as demais entram por cima.
+  const orangeMid = useTransform(scrollYProgress, [0, 0.2, 0.38, 0.55, 0.7, 1], [0, 1, 1, 1, 0, 0])
+  const orangeBright = useTransform(scrollYProgress, [0, 0.2, 0.38, 0.55, 0.7, 1], [0, 0, 1, 0, 0, 0])
+  const black = useTransform(scrollYProgress, [0, 0.2, 0.38, 0.55, 0.7, 1], [0, 0, 0, 0, 1, 1])
 
   return (
     <motion.section
       ref={sectionRef}
       id="como-funciona"
       className="relative px-5 lg:px-10"
-      style={{ backgroundColor: isMobile ? '#0A0A0A' : bgColor }}
     >
+      {/* Camadas de fundo — IRMÃS dos cards (nunca pai). Ficam em position:absolute,
+          fora do fluxo, então não interferem no sticky-stack. zIndex 0 as mantém
+          sob os cards (que usam zIndex 10 + index). */}
+      <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#0A0A0A' }} />
+        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: '#7A3B12', opacity: orangeMid }} />
+        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: '#C2410C', opacity: orangeBright }} />
+        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: '#000000', opacity: black }} />
+      </div>
+
       {steps.map((step, i) => (
         <StepCard
           key={step.number}
