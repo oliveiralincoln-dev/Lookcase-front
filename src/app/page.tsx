@@ -132,7 +132,7 @@ function FAQSection() {
               <div
                 className="overflow-hidden"
                 style={{
-                  maxHeight: openItems.has(i) ? '240px' : '0px',
+                  maxHeight: openItems.has(i) ? '480px' : '0px',
                   opacity: openItems.has(i) ? 1 : 0,
                   transition: 'max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease',
                 }}

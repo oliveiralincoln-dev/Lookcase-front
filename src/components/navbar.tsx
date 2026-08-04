@@ -206,7 +206,8 @@ export default function Navbar() {
 
       {/* Hamburger — apenas mobile */}
       <button
-        className="lg:hidden z-50 flex flex-col gap-[5px] p-2 flex-shrink-0"
+        className="lg:hidden z-50 flex flex-col items-center justify-center gap-[5px] p-2 flex-shrink-0"
+        style={{ minWidth: 44, minHeight: 44 }}
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         aria-label="Abrir menu"
       >

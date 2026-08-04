@@ -8,7 +8,7 @@ export function PromiseSection() {
   return (
     <section className="px-4 py-12 sm:px-6 sm:py-20 max-w-[1200px] mx-auto">
       <div
-        className="rounded-[28px] overflow-hidden relative min-h-[560px] sm:min-h-[420px]"
+        className="rounded-[28px] overflow-hidden relative min-h-[460px] sm:min-h-[420px]"
         style={{ background: ORANGE }}
       >
         {/* Vídeo ocupa o card inteiro como fundo */}
@@ -64,7 +64,7 @@ export function PromiseSection() {
         </div>
 
         {/* Conteúdo: texto base-esquerda */}
-        <div className="relative z-[3] flex flex-col justify-end px-6 py-10 sm:px-12 sm:py-11 max-w-full sm:max-w-[52%] min-h-[560px] sm:min-h-[420px]">
+        <div className="relative z-[3] flex flex-col justify-end px-6 py-10 sm:px-12 sm:py-11 max-w-full sm:max-w-[52%] min-h-[460px] sm:min-h-[420px]">
           <div>
             <h2
               style={{

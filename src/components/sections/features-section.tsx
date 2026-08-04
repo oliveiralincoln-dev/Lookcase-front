@@ -119,7 +119,8 @@ function StepCard({
                   <div
                     className="relative rounded-[24px] overflow-hidden aspect-square"
                     style={{
-                      width: 340,
+                      width: '100%',
+                      maxWidth: 340,
                     }}
                   >
                     <video

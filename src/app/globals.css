@@ -273,7 +273,7 @@ body::after {
 @media (min-width: 1024px) {
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(320px, 560px) 460px;
+    grid-template-columns: minmax(320px, 560px) minmax(0, 460px);
     gap: 80px;
     align-items: center;
     justify-content: center;
