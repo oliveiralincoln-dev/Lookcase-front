@@ -64,6 +64,19 @@ export function PricingSection() {
   return (
     <section id="planos" className="px-5 lg:px-10 py-14 lg:py-20">
 
+      {/* Abaixo de 640px (inverso exato do breakpoint sm do Tailwind): cards empilhados,
+          largura total e iguais, sem o flex desigual nem o dimming do inativo.
+          A partir de 640px prevalece o style inline aprovado do desktop. */}
+      <style>{`
+        @media (max-width: 639.98px) {
+          .lk-plan-card {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
+
       <h2 className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.05] mb-2">
         <VerticalCutReveal text="Simples e transparente." />
       </h2>
@@ -79,11 +92,12 @@ export function PricingSection() {
         Um valor fixo por mês, sem surpresa na fatura. Você sabe exatamente quanto vai pagar, sempre.
       </motion.p>
 
-      <div className="max-w-3xl mx-auto flex gap-3 items-stretch">
+      <div className="max-w-3xl mx-auto flex flex-col sm:flex-row gap-3 items-stretch">
 
         {/* ── BASIC ── */}
         <motion.div
           layout
+          className="lk-plan-card"
           custom={0}
           variants={cardRevealVariants}
           initial="hidden"
@@ -172,6 +186,7 @@ export function PricingSection() {
         {/* ── PRO ── */}
         <motion.div
           layout
+          className="lk-plan-card"
           custom={1}
           variants={cardRevealVariants}
           initial="hidden"
