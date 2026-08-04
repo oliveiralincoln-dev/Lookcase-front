@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'motion/react'
 import type { MotionValue } from 'motion/react'
 import { Iphone } from '@/components/ui/iphone'
@@ -77,6 +77,7 @@ function StepCard({
           style={{
             scale,
             transformOrigin: 'top center',
+            willChange: 'transform',
             ...glowBorder,
             backgroundColor: 'var(--color-lk-card)',
             boxShadow: '0 -40px 60px -20px rgba(0,0,0,0.55)',
@@ -168,6 +169,20 @@ function StepCard({
 export function FeaturesSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
+  // Abaixo de 1024px o fundo animado (repaint contínuo da section inteira) causa
+  // tremor no Android/Chrome. Detectamos via matchMedia e trocamos por uma cor
+  // estática. Inicia em `false` (desktop) e só muda após o mount, para não gerar
+  // mismatch de hidratação no Next.
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 1023px)')
+    setIsMobile(mql.matches)
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mql.addEventListener('change', onChange)
+    return () => mql.removeEventListener('change', onChange)
+  }, [])
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end'],
@@ -184,7 +199,7 @@ export function FeaturesSection() {
       ref={sectionRef}
       id="como-funciona"
       className="relative px-5 lg:px-10"
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: isMobile ? '#0A0A0A' : bgColor }}
     >
       {steps.map((step, i) => (
         <StepCard
