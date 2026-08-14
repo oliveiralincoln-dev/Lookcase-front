@@ -27,7 +27,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Como funciona o pagamento das vendas?',
-    a: 'Você escolhe: ative o pagamento direto no carrinho (Pix e cartão, processado pela Lookcase) ou continue combinando com a cliente pelo WhatsApp — Pix, dinheiro, cartão na entrega.',
+    a: 'Você combina direto com a cliente pelo WhatsApp — Pix, dinheiro ou cartão na entrega, do jeito que preferir. O dinheiro cai na sua conta, sem passar pela Lookcase e sem taxa por venda.',
   },
   {
     q: 'Posso testar antes de pagar?',
@@ -46,7 +46,7 @@ const FAQ_ITEMS = [
 const notifications = [
   { icon: '🛍️', title: 'Novo pedido',         desc: 'Vestido Midi P · R$ 189',    time: 'agora' },
   { icon: '👤', title: 'Nova visita',          desc: 'Ana Lima · via Instagram',   time: '1m'    },
-  { icon: '✅', title: 'Pagamento confirmado', desc: 'R$ 189 · Pix',               time: '1m'    },
+  { icon: '⭐', title: 'Nova avaliação',        desc: 'Vestido Midi · 5 estrelas',  time: '1m'    },
   { icon: '🛍️', title: 'Novo pedido',         desc: 'Conjunto Linho M · R$ 234',  time: '3m'    },
   { icon: '👤', title: 'Nova visita',          desc: 'Carla M. · via link bio',    time: '5m'    },
   { icon: '🛍️', title: 'Novo pedido',         desc: 'Saia Plissada G · R$ 142',   time: '8m'    },

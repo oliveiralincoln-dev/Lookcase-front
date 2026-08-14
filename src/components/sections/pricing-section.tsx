@@ -14,8 +14,8 @@ const BASIC_FEATURES = [
   'Painel visual completo',
   'Vitrine com carrinho',
   'Analytics completo',
-  'Pagamento direto no carrinho',
-  'Cupom de desconto automático',
+  'Pedidos direto no seu WhatsApp',
+  'Avaliações de clientes',
 ]
 
 const PRO_FEATURES = [
