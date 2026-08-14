@@ -3,7 +3,7 @@ import { PricingSection } from '@/components/sections/pricing-section'
 
 export const metadata: Metadata = {
   title: 'Lookcase — Planos e preços',
-  description: 'Planos a partir de R$ 59/mês, sem taxa por venda. 7 dias grátis em qualquer plano, sem cartão de crédito.',
+  description: 'Planos a partir de R$ 59/mês, sem taxa por venda. Cancele quando quiser, direto no painel.',
 }
 
 export default function PrecosPage() {

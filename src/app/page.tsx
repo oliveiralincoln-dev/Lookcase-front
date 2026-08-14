@@ -30,11 +30,7 @@ const FAQ_ITEMS = [
     a: 'Você combina direto com a cliente pelo WhatsApp — Pix, dinheiro ou cartão na entrega, do jeito que preferir. O dinheiro cai na sua conta, sem passar pela Lookcase e sem taxa por venda.',
   },
   {
-    q: 'Posso testar antes de pagar?',
-    a: 'Sim. Você tem 7 dias grátis para configurar sua loja e sentir como funciona. Sem cartão de crédito no início.',
-  },
-  {
-    q: 'E se eu quiser cancelar?',
+    q: 'E se eu não gostar?',
     a: 'Cancela quando quiser, direto no painel, em menos de 1 minuto. Sem ligar pra ninguém, sem justificar, sem multa.',
   },
   {
@@ -310,7 +306,7 @@ function CTAFinalSection() {
                 className="inline-flex items-center gap-2 font-display text-[15px] lg:text-[16px] font-semibold px-10 py-[16px] rounded-full hover:opacity-90 transition-opacity tracking-[-0.01em]"
                 style={shouldReduceMotion ? { color: '#FFFFFF' } : { color: btnColor }}
               >
-                Criar minha loja grátis →
+                Criar minha loja →
               </motion.span>
             </Link>
           </motion.div>

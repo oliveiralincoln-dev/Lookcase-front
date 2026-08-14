@@ -148,7 +148,7 @@ export function PricingSection() {
               color: 'var(--color-lk-gray-400)',
             }}
           >
-            Começar grátis
+            Criar minha loja
           </a>
 
           <div style={{ borderTop: '1px dashed var(--color-lk-border)', marginBottom: '1rem' }} />
@@ -251,7 +251,7 @@ export function PricingSection() {
             className="block text-center font-display text-[13px] font-medium py-[10px] rounded-full transition-opacity hover:opacity-90 mb-4"
             style={{ background: 'var(--color-lk-white)', color: '#000' }}
           >
-            Começar grátis
+            Criar minha loja
           </a>
 
           <div style={{ borderTop: '1px dashed var(--color-lk-border)', marginBottom: '1rem' }} />

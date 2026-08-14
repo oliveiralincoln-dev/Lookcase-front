@@ -10,7 +10,7 @@ const steps = [
   {
     number: '01',
     title: 'Crie sua conta',
-    description: 'Email, nome da loja e plano. Menos de 2 minutos, sem cartão para começar.',
+    description: 'Email, nome da loja e plano. Menos de 2 minutos e sua loja está no ar.',
     image: '/como-funciona/crie-sua-conta.jpeg' as string | null,
     video: null as string | null,
     marquee: false,
