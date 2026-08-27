@@ -20,7 +20,7 @@ const NAV_LINKS = [
   { href: '/#produto',      label: 'Produto',         section: 'produto'      },
   { href: '/#como-funciona', label: 'Como funciona',  section: 'como-funciona' },
   { href: '/#o-que-muda',   label: 'Benefícios',      section: 'o-que-muda'   },
-  { href: '/precos',        label: 'Preços',           section: 'planos'       },
+  { href: '/precos',        label: 'Plano',            section: 'planos'       },
   { href: '/#faq',          label: 'FAQ',              section: 'faq'          },
 ]
 
