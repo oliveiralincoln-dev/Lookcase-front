@@ -30,6 +30,7 @@ export default function ContatoPage() {
             href="https://wa.me/5592981362063"
             target="_blank"
             rel="noopener noreferrer"
+            draggable={false}
             className="group flex items-center justify-between px-6 py-5 rounded-2xl bg-lk-card border-[1.5px] border-lk-orange transition-colors hover:bg-lk-subtle"
           >
             <div className="flex items-center gap-3">
@@ -44,6 +45,7 @@ export default function ContatoPage() {
 
           <a
             href="mailto:contato@lookcase.app.br"
+            draggable={false}
             className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-lk-surface border border-lk-border transition-colors hover:border-lk-border-strong"
           >
             <Mail size={18} className="text-lk-gray-500" />
