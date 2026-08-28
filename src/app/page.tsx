@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import RotatingText from '@/components/ui/rotating-text'
-import { LookcaseMark } from '@/components/ui/lookcase-mark'
+import { Footer } from '@/components/footer'
 import { Marquee, MarqueeCard } from '@/components/ui/marquee'
 import { Link2, Percent, Zap, Package, Share2, Palette, Shield, ClipboardList, Layers, Headphones, Infinity, RefreshCw, Shirt, ArrowLeft, ArrowRight } from 'lucide-react'
 import { AnimatedList } from '@/components/ui/animated-list'
@@ -35,7 +35,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Quantos produtos posso cadastrar?',
-    a: 'No plano Atelier você pode cadastrar até 50 produtos. No plano Pro os produtos são ilimitados. Em ambos os casos, o cadastro é feito pelo painel, com foto real do produto — simples e rápido.',
+    a: 'Quantos você quiser — não tem limite. O cadastro é feito pelo painel, com foto real do produto, e já entra na sua vitrine na hora.',
   },
 ]
 
@@ -769,86 +769,7 @@ export default function Home() {
       {/* ============================================================
           FOOTER
           ============================================================ */}
-      <footer className="border-t border-lk-border" style={{ position: 'sticky', bottom: 0, zIndex: -1 }}>
-
-        {/* Corpo do footer */}
-        <div className="px-5 lg:px-10 py-10 lg:py-12 flex flex-col lg:grid lg:[grid-template-columns:1.2fr_1fr_1fr] gap-8 lg:gap-12">
-
-          {/* Coluna 1 — Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <LookcaseMark size={24} />
-              <span className="font-display text-[16px] font-medium text-lk-white">
-                Lookcase
-              </span>
-            </div>
-            <p className="font-body text-[13px] text-lk-gray-500 leading-[1.6] max-w-[200px] mb-6">
-              A loja online do empreendedor de moda brasileiro.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {['Meta', 'WhatsApp API', 'SSL', 'LGPD'].map((badge) => (
-                <span
-                  key={badge}
-                  className="font-body text-[11px] font-medium text-lk-gray-400 bg-lk-surface border border-lk-border rounded-md px-[10px] py-[4px]"
-                >
-                  {badge}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Coluna 2 — Produto */}
-          <div>
-            <p className="font-body text-[11px] font-semibold uppercase tracking-[0.08em] text-lk-gray-600 mb-4">
-              Produto
-            </p>
-            {[
-              'Como funciona',
-              'Funcionalidades',
-              'Planos e preços',
-              'Exemplo de loja',
-            ].map((link) => (
-              <a
-                key={link}
-                href="#"
-                className="block font-body text-[13px] text-lk-gray-500 mb-3 hover:text-lk-gray-100 transition-colors"
-              >
-                {link}
-              </a>
-            ))}
-          </div>
-
-          {/* Coluna 3 — Empresa */}
-          <div>
-            <p className="font-body text-[11px] font-semibold uppercase tracking-[0.08em] text-lk-gray-600 mb-4">
-              Empresa
-            </p>
-            {[
-              'Sobre o Lookcase',
-              'Contato',
-              'Termos de uso',
-              'Política de privacidade',
-            ].map((link) => (
-              <a
-                key={link}
-                href="#"
-                className="block font-body text-[13px] text-lk-gray-500 mb-3 hover:text-lk-gray-100 transition-colors"
-              >
-                {link}
-              </a>
-            ))}
-          </div>
-
-        </div>
-
-        {/* Rodapé do footer */}
-        <div className="px-5 lg:px-10 py-5 border-t border-lk-border flex items-center justify-center">
-          <span className="font-body text-[12px] text-lk-gray-600">
-            © 2026 Lookcase · Todos os direitos reservados
-          </span>
-        </div>
-
-      </footer>
+      <Footer />
       </div>
 
     </main>

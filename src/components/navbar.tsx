@@ -20,12 +20,13 @@ const NAV_LINKS = [
   { href: '/#produto',      label: 'Produto',         section: 'produto'      },
   { href: '/#como-funciona', label: 'Como funciona',  section: 'como-funciona' },
   { href: '/#o-que-muda',   label: 'Benefícios',      section: 'o-que-muda'   },
-  { href: '/precos',        label: 'Plano',            section: 'planos'       },
+  { href: '/precos',        label: 'Assinatura',       section: 'planos'       },
   { href: '/#faq',          label: 'FAQ',              section: 'faq'          },
 ]
 
 export default function Navbar() {
   const pathname = usePathname()
+  const isPrecos = pathname === '/precos'
   const [activeSection, setActiveSectionState] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [pillStyle, setPillStyle] = useState<React.CSSProperties>({})
@@ -178,7 +179,14 @@ export default function Navbar() {
 
       {/* CTA */}
       <div className="hidden lg:flex items-center gap-3 z-10 flex-shrink-0">
-        <Link href={`${APP_URL}/entrar`} className="font-body text-sm text-lk-gray-500 hover:text-lk-gray-400 transition-colors">
+        <Link
+          href={`${APP_URL}/entrar`}
+          className={`font-body text-sm transition-colors ${
+            isPrecos
+              ? 'text-[rgba(23,13,6,0.82)] hover:text-[rgba(23,13,6,1)]'
+              : 'text-lk-gray-500 hover:text-lk-gray-400'
+          }`}
+        >
           Entrar
         </Link>
         <Link
@@ -192,7 +200,14 @@ export default function Navbar() {
 
       {/* CTA compacto — apenas mobile, sempre visível */}
       <div className="lg:hidden flex items-center gap-2 z-10 flex-shrink-0">
-        <Link href={`${APP_URL}/entrar`} className="font-body text-[13px] text-lk-gray-500 hover:text-lk-gray-400 transition-colors">
+        <Link
+          href={`${APP_URL}/entrar`}
+          className={`font-body text-[13px] transition-colors ${
+            isPrecos
+              ? 'text-[rgba(23,13,6,0.82)] hover:text-[rgba(23,13,6,1)]'
+              : 'text-lk-gray-500 hover:text-lk-gray-400'
+          }`}
+        >
           Entrar
         </Link>
         <Link

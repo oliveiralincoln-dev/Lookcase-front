@@ -64,7 +64,7 @@ export function PricingSection() {
         whileInView="visible"
         viewport={{ once: true }}
         className="font-body text-[15px] mb-10"
-        style={{ color: 'var(--color-lk-gray-500)' }}
+        style={{ color: 'rgba(23,13,6,0.82)' }}
       >
         Uma assinatura. Um valor fixo por mês. Sem surpresa na fatura — você sabe exatamente quanto vai pagar, sempre.
       </motion.p>
@@ -78,7 +78,7 @@ export function PricingSection() {
           viewport={{ once: true }}
           style={{
             background: 'var(--color-lk-surface)',
-            border: '1px solid var(--color-lk-orange)',
+            border: '1px solid var(--color-lk-white)',
             borderRadius: 16,
             padding: '1.5rem',
             position: 'relative',
@@ -89,7 +89,7 @@ export function PricingSection() {
           <motion.div
             style={{
               position: 'absolute', inset: 0, borderRadius: 16,
-              border: '1px solid var(--color-lk-orange)',
+              border: '1px solid var(--color-lk-white)',
               pointerEvents: 'none',
             }}
             animate={{ opacity: [1, 0.15, 1] }}

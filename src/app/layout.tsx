@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Lookcase — Vitrine digital para sua loja de roupas",
     description:
-      "Crie uma loja profissional em 10 minutos. Suas clientes navegam e pedem pelo WhatsApp — você só confirma. A partir de R$ 59/mês, sem taxa por venda.",
+      "Crie uma loja profissional em 10 minutos. Suas clientes navegam e pedem pelo WhatsApp — você só confirma. R$ 47,90/mês, produtos ilimitados, sem taxa por venda.",
     url: "https://lookcase.app.br",
     siteName: "Lookcase",
     locale: "pt_BR",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Lookcase — Vitrine digital para sua loja de roupas",
     description:
-      "Vitrine profissional em 10 minutos. Seus clientes navegam e pedem pelo WhatsApp. A partir de R$ 59/mês, sem taxa por venda.",
+      "Vitrine profissional em 10 minutos. Seus clientes navegam e pedem pelo WhatsApp. R$ 47,90/mês, produtos ilimitados, sem taxa por venda.",
   },
   robots: {
     index: true,
