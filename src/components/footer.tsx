@@ -56,17 +56,17 @@ export function Footer() {
             Empresa
           </p>
           {[
-            'Sobre o Lookcase',
-            'Contato',
-            'Termos de uso',
-            'Política de privacidade',
+            { label: 'Sobre o Lookcase', href: '/sobre' },
+            { label: 'Contato', href: '/contato' },
+            { label: 'Termos de uso', href: '/termos' },
+            { label: 'Política de privacidade', href: '/privacidade' },
           ].map((link) => (
             <a
-              key={link}
-              href="#"
+              key={link.label}
+              href={link.href}
               className="block font-body text-[13px] text-lk-gray-500 mb-3 hover:text-lk-gray-100 transition-colors"
             >
-              {link}
+              {link.label}
             </a>
           ))}
         </div>
