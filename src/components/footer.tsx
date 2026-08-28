@@ -36,17 +36,16 @@ export function Footer() {
             Produto
           </p>
           {[
-            'Como funciona',
-            'Funcionalidades',
-            'Planos e preços',
-            'Exemplo de loja',
+            { label: 'Como funciona', href: '/#como-funciona' },
+            { label: 'Funcionalidades', href: '/#produto' },
+            { label: 'Planos e preços', href: '/precos' },
           ].map((link) => (
             <a
-              key={link}
-              href="#"
+              key={link.label}
+              href={link.href}
               className="block font-body text-[13px] text-lk-gray-500 mb-3 hover:text-lk-gray-100 transition-colors"
             >
-              {link}
+              {link.label}
             </a>
           ))}
         </div>
