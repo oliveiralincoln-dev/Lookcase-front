@@ -101,11 +101,11 @@ export function TestimonialsSection() {
         </div>
 
         {/* RIGHT — cards empilhados animados */}
-        <div className="relative min-h-[300px]">
+        <div className="grid">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.id}
-              className="absolute inset-0"
+              className="[grid-area:1/1]"
               initial={{ opacity: 0, x: 60 }}
               animate={{
                 opacity: activeIndex === i ? 1 : 0,
@@ -113,7 +113,10 @@ export function TestimonialsSection() {
                 scale: activeIndex === i ? 1 : 0.97,
               }}
               transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-              style={{ zIndex: activeIndex === i ? 10 : 0 }}
+              style={{
+                zIndex: activeIndex === i ? 10 : 0,
+                pointerEvents: activeIndex === i ? 'auto' : 'none',
+              }}
             >
               <div
                 className="h-full flex flex-col p-8 rounded-2xl"
