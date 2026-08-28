@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Footer } from '@/components/footer'
+import { H2, P } from '@/components/content-typography'
 
 export const metadata: Metadata = {
   title: 'Como organizar pedidos pelo WhatsApp sem perder nenhum — Lookcase',
@@ -30,35 +32,13 @@ const jsonLd = {
   mainEntityOfPage: 'https://lookcase.app.br/guias/organizar-pedidos-whatsapp',
 }
 
-function H2({ children }: { children: React.ReactNode }) {
-  return (
-    <h2
-      className="font-display text-[24px] lg:text-[28px] font-medium tracking-[-0.02em] leading-[1.15] mt-12 mb-4"
-      style={{ color: 'var(--color-lk-white)' }}
-    >
-      {children}
-    </h2>
-  )
-}
-
-function P({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      className="font-body text-[15px] lg:text-[16px] leading-[1.8] mb-5"
-      style={{ color: 'var(--color-lk-gray-400)' }}
-    >
-      {children}
-    </p>
-  )
-}
-
 export default function GuiaOrganizarPedidosWhatsApp() {
   return (
-    <main className="min-h-screen pt-32 pb-24" style={{ background: 'var(--color-lk-surface)' }}>
+    <main className="min-h-screen pt-32" style={{ background: 'var(--color-lk-surface)' }}>
       {/* eslint-disable-next-line react/no-danger */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <article className="max-w-[680px] mx-auto px-5 lg:px-0">
+      <article className="max-w-[680px] mx-auto px-5 lg:px-0 pb-24">
         <p
           className="font-body text-[11px] font-semibold uppercase tracking-[0.12em] mb-4"
           style={{ color: 'var(--color-lk-orange)' }}
@@ -151,6 +131,7 @@ export default function GuiaOrganizarPedidosWhatsApp() {
           .
         </P>
       </article>
+      <Footer />
     </main>
   )
 }
