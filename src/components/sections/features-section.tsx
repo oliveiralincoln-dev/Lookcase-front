@@ -34,10 +34,10 @@ const steps = [
 ]
 
 const glowBorder = {
-  borderTop: '1px solid rgba(249,115,22,0.25)',
-  borderRight: '1px solid rgba(255,255,255,0.06)',
-  borderBottom: '1px solid rgba(255,255,255,0.06)',
-  borderLeft: '1px solid rgba(255,255,255,0.06)',
+  borderTop: '1px solid rgba(249,115,22,0.45)',
+  borderRight: '1px solid rgba(10,10,10,0.07)',
+  borderBottom: '1px solid rgba(10,10,10,0.07)',
+  borderLeft: '1px solid rgba(10,10,10,0.07)',
 }
 
 function StepCard({
@@ -80,7 +80,7 @@ function StepCard({
             willChange: 'transform',
             ...glowBorder,
             backgroundColor: 'var(--color-lk-card)',
-            boxShadow: '0 -40px 60px -20px rgba(0,0,0,0.55)',
+            boxShadow: '0 -30px 60px -24px rgba(10,10,10,0.18)',
           }}
           className="mx-auto max-w-[1200px] rounded-[32px] overflow-hidden"
         >
@@ -193,10 +193,10 @@ export function FeaturesSection() {
           fora do fluxo, então não interferem no sticky-stack. zIndex 0 as mantém
           sob os cards (que usam zIndex 10 + index). */}
       <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#0A0A0A' }} />
-        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: '#7A3B12', opacity: orangeMid }} />
-        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: '#C2410C', opacity: orangeBright }} />
-        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: '#000000', opacity: black }} />
+        <div style={{ position: 'absolute', inset: 0, backgroundColor: 'var(--color-lk-base)' }} />
+        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: '#FDE2C8', opacity: orangeMid }} />
+        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: '#F97316', opacity: orangeBright }} />
+        <motion.div style={{ position: 'absolute', inset: 0, backgroundColor: 'var(--color-lk-base)', opacity: black }} />
       </div>
 
       {steps.map((step, i) => (

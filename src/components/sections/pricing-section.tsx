@@ -136,7 +136,7 @@ export function PricingSection() {
           <a
             href={`${APP_URL}/cadastro`}
             className="block text-center font-display text-[13px] font-medium py-[10px] rounded-full transition-opacity hover:opacity-90 mb-2"
-            style={{ background: 'var(--color-lk-white)', color: '#000' }}
+            style={{ background: 'var(--color-lk-white)', color: '#FFFFFF' }}
           >
             Criar minha loja
           </a>

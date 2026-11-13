@@ -65,8 +65,8 @@ export function MarqueeCard({ icon, title, description }: MarqueeCardProps) {
   return (
     <div
       style={{
-        background: 'rgba(255,255,255,0.03)',
-        border: '0.5px solid rgba(255,255,255,0.08)',
+        background: '#FFFFFF',
+        border: '1px solid rgba(10,10,10,0.08)',
         borderRadius: '12px',
         padding: '20px',
         minWidth: '220px',
@@ -75,14 +75,14 @@ export function MarqueeCard({ icon, title, description }: MarqueeCardProps) {
         marginRight: '12px',
       }}
     >
-      <div style={{ color: 'rgba(255,255,255,0.3)', width: 20, height: 20 }}>
+      <div style={{ color: '#F97316', width: 20, height: 20 }}>
         {icon}
       </div>
       <p
         style={{
           fontSize: '14px',
           fontWeight: 500,
-          color: '#ffffff',
+          color: '#0A0A0A',
           marginTop: '12px',
           lineHeight: 1.3,
         }}
@@ -92,7 +92,7 @@ export function MarqueeCard({ icon, title, description }: MarqueeCardProps) {
       <p
         style={{
           fontSize: '12px',
-          color: 'rgba(255,255,255,0.4)',
+          color: '#6B6257',
           lineHeight: 1.5,
           marginTop: '6px',
         }}

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import RotatingText from '@/components/ui/rotating-text'
 import { Footer } from '@/components/footer'
 import { Marquee, MarqueeCard } from '@/components/ui/marquee'
-import { Link2, Percent, Zap, Package, Share2, Palette, Shield, ClipboardList, Layers, Headphones, Infinity, RefreshCw, Shirt, ArrowLeft, ArrowRight } from 'lucide-react'
+import { Link2, Percent, Zap, Package, Share2, Palette, Shield, ClipboardList, Layers, Headphones, Infinity, RefreshCw, Shirt, ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react'
 import { AnimatedList } from '@/components/ui/animated-list'
 import { FeaturesSection } from '@/components/sections/features-section'
 import { PromiseSection } from '@/components/sections/promise-section'
@@ -202,11 +202,6 @@ const promiseSlides = [
   { text: 'Do clique à compra, tudo num toque.',                bg: '#EFEAE4', color: '#4A4038' },
 ]
 
-const heroContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.18 } },
-}
-
 const blurFadeIn = {
   hidden: { opacity: 0, filter: 'blur(6px)' },
   visible: { opacity: 1, filter: 'blur(0px)', transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as const } },
@@ -232,17 +227,17 @@ function CTAFinalSection() {
   // Texto entra cedo, e inverte de claro pra escuro quando o fundo vira laranja solido
   const contentOpacity = useTransform(smooth, [0, 0.35], [0, 1])
   const contentY = useTransform(smooth, [0, 0.35], [18, 0])
-  const headingColor = useTransform(smooth, [0.72, 0.86], ['#FFFFFF', '#1A1A18'])
-  const subColor = useTransform(smooth, [0.72, 0.86], ['rgba(255,255,255,0.55)', 'rgba(26,26,24,0.72)'])
-  const btnBg = useTransform(smooth, [0.72, 0.86], ['#FFFFFF', '#1A1A18'])
-  const btnColor = useTransform(smooth, [0.72, 0.86], ['#000000', '#FFFFFF'])
+  const headingColor = useTransform(smooth, [0.72, 0.86], ['#0A0A0A', '#1A1A18'])
+  const subColor = useTransform(smooth, [0.72, 0.86], ['rgba(10,10,10,0.62)', 'rgba(26,26,24,0.72)'])
+  const btnBg = useTransform(smooth, [0.72, 0.86], ['#0A0A0A', '#1A1A18'])
+  const btnColor = useTransform(smooth, [0.72, 0.86], ['#FFFFFF', '#FFFFFF'])
 
   return (
     <div ref={containerRef} style={{ height: '220vh', position: 'relative' }}>
       <section
         className="px-5 lg:px-10 text-center relative overflow-hidden flex items-center justify-center"
         style={{
-          background: '#000000',
+          background: 'var(--color-lk-base)',
           position: 'sticky',
           top: 0,
           height: '100vh',
@@ -316,6 +311,236 @@ function CTAFinalSection() {
   )
 }
 
+// ============================================================
+// HERO — "fita que torce" (spec: docs/superpowers/specs/2026-11-13-hero-fita-design.md)
+// Duas curvas se desenham e se cruzam duas vezes. Só laranja e preto: as áreas
+// entre as curvas trocam de cor a cada cruzamento.
+// Coordenadas em viewBox 160x100, esticado ao hero (preserveAspectRatio none).
+// ============================================================
+
+type RibbonGeometry = {
+  /** Curva A — divisão inicial laranja (acima) / preto (abaixo) */
+  a: string
+  /** Curva B — cruza A duas vezes; vira a borda final entre as cores */
+  b: string
+  /** Amplitude da onda (unidades do viewBox; 100 = altura do hero) */
+  wave: number
+}
+
+// As curvas ficam no rodapé do hero, abaixo do texto e dos botões.
+const RIBBON_DESKTOP: RibbonGeometry = {
+  a: 'M0,77.5 C24,80 40,80.5 56,79.2 C80,77.1 92,70.8 104,66.6 C116,62.4 132,60.3 160,59.5',
+  b: 'M0,82.6 C16,82.6 24,80 34,77.9 C52,74.2 70,71.6 86,68.3 C100,65.3 112,62.4 126,61.6 C138,61.1 150,62 160,62.8',
+  wave: 1.1,
+}
+
+const RIBBON_MOBILE: RibbonGeometry = {
+  a: 'M0,89.3 C20,89.7 34,89 46,87.1 C62,84.4 70,80.6 84,78.3 C100,76 130,75.5 160,75.5',
+  b: 'M0,91 C14,91.2 24,90.1 34,88.6 C46,86.3 52,82.9 60,80.6 C70,77.9 84,76 104,75.3 C124,74.5 144,75.7 160,77.2',
+  wave: 0.7,
+}
+
+const ORANGE = '#F97316'
+const BLACK = '#0A0A0A'
+const WHITE = '#FFFFFF'
+
+/** Região acima de uma curva que começa em x=0 e termina em x=160 */
+const regionAbove = (d: string) => `M0,-10 L${d.slice(1)} L160,-10 Z`
+/** Região abaixo de uma curva (vai além do rodapé para cobrir a subida da entrada) */
+const regionBelow = (d: string) => `M0,130 L${d.slice(1)} L160,130 Z`
+
+// Onda sutil: cada ponto da curva sobe e desce num seno que viaja da esquerda
+// para a direita. Gera quadros com a mesma estrutura de comandos, para o SVG
+// interpolar o atributo `d` (SMIL) sem trocar o formato do path.
+const WAVE_FRAMES = 12
+function waveFrames(d: string, amp: number, phaseOffset: number): string[] {
+  return Array.from({ length: WAVE_FRAMES + 1 }, (_, i) => {
+    const phase = (i / WAVE_FRAMES) * Math.PI * 2 + phaseOffset
+    return d.replace(/(-?\d+\.?\d*),(-?\d+\.?\d*)/g, (_m, xs: string, ys: string) => {
+      const x = parseFloat(xs)
+      const y = parseFloat(ys) + amp * Math.sin((x / 160) * Math.PI * 2 * 1.25 - phase)
+      return `${xs},${y.toFixed(2)}`
+    })
+  })
+}
+
+function WavePath({
+  frames,
+  animate,
+  ...props
+}: { frames: string[]; animate: boolean } & React.SVGProps<SVGPathElement>) {
+  return (
+    <path d={frames[0]} {...props}>
+      {animate && <animate attributeName="d" dur="9s" repeatCount="indefinite" values={frames.join(';')} />}
+    </path>
+  )
+}
+
+// Laranja acima das linhas, preto abaixo e branco nos espaços que os cruzamentos
+// criam entre elas (revelados por uma varredura da esquerda para a direita).
+// As linhas são brancas e ondulam devagar, sempre abaixo do texto.
+function RibbonBackground({ geo, id, className }: { geo: RibbonGeometry; id: string; className: string }) {
+  const reduceMotion = useReducedMotion()
+  const wave = !reduceMotion
+
+  const aFrames = waveFrames(geo.a, geo.wave, 0)
+  const bFrames = waveFrames(geo.b, geo.wave, Math.PI / 2)
+  const belowA = aFrames.map(regionBelow)
+  const lens = aFrames.map((a, i) => `${regionAbove(a)} ${regionAbove(bFrames[i])}`)
+
+  return (
+    <svg
+      aria-hidden
+      className={`absolute inset-0 w-full h-full pointer-events-none ${className}`}
+      viewBox="0 0 160 100"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <clipPath id={`${id}-lens`}>
+          <WavePath frames={lens} animate={wave} clipRule="evenodd" />
+        </clipPath>
+        <mask id={`${id}-wipe`} maskUnits="userSpaceOnUse" x="0" y="-10" width="160" height="120">
+          <rect className="lk-hero-wipe" x="0" y="-10" width="160" height="120" fill="#fff" />
+        </mask>
+      </defs>
+
+      <rect width="160" height="100" fill={ORANGE} />
+
+      {/* A onda inteira (preto, branco e linhas) sobe do rodapé e aparece suavemente */}
+      <g className="lk-hero-rise">
+        {/* Preto abaixo da curva A */}
+        <WavePath frames={belowA} animate={wave} fill={BLACK} />
+
+        {/* Espaços entre as linhas (gerados pelos cruzamentos) ficam brancos, da esquerda para a direita */}
+        <g clipPath={`url(#${id}-lens)`} mask={`url(#${id}-wipe)`}>
+          <rect x="0" y="-10" width="160" height="130" fill={WHITE} />
+        </g>
+
+        {/* Linhas brancas se desenhando e depois ondulando */}
+        <WavePath frames={aFrames} animate={wave} className="lk-hero-line lk-hero-line-a" pathLength={1} fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+        <WavePath frames={bFrames} animate={wave} className="lk-hero-line lk-hero-line-b" pathLength={1} fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+      </g>
+    </svg>
+  )
+}
+
+const HERO_TEXTS = [
+  'Catálogo organizado.',
+  'Pedidos sem bagunça.',
+  'Sua marca, do seu jeito.',
+  'Direto onde você já vende.',
+]
+
+// O conteúdo entra junto com a onda, linha a linha
+const heroContentContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.14, delayChildren: 0.45 } },
+}
+
+// Mesmo padrão de blur + fade do site, mas cada linha é revelada da esquerda
+// para a direita (no sentido da varredura da onda). O recorte tem folga para
+// não cortar sombra, acentos e o brilho do botão.
+const heroSlideIn = {
+  hidden: { opacity: 0, x: -28, filter: 'blur(6px)', clipPath: 'inset(-30% 100% -30% -10%)' },
+  visible: {
+    opacity: 1,
+    x: 0,
+    filter: 'blur(0px)',
+    clipPath: 'inset(-30% -10% -30% -10%)',
+    transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as const },
+  },
+}
+
+function Hero() {
+  const reduceMotion = useReducedMotion()
+  // Trocar a key remonta o fundo e o conteúdo, e as animações de entrada rodam de novo
+  const [replayKey, setReplayKey] = useState(0)
+
+  const headingStyle: React.CSSProperties = {
+    fontSize: 'clamp(2rem, 4.6vw, 3.2rem)',
+    lineHeight: 1.18,
+    letterSpacing: '-1.5px',
+    color: '#FFFFFF',
+    textShadow: '0 1px 24px rgba(90,30,0,0.22)',
+  }
+
+  return (
+    <section
+      className="relative overflow-hidden flex flex-col items-center justify-start text-center px-6 pt-[calc(80px+5vh)] md:pt-[calc(80px+7vh)] pb-24 rounded-b-[32px] lg:rounded-b-[48px] bg-[#0A0A0A]"
+      style={{ marginTop: -80, minHeight: 'calc(100vh + 80px)' }}
+    >
+      <RibbonBackground key={`d-${replayKey}`} geo={RIBBON_DESKTOP} id="lk-ribbon-d" className="hidden md:block" />
+      <RibbonBackground key={`m-${replayKey}`} geo={RIBBON_MOBILE} id="lk-ribbon-m" className="md:hidden" />
+
+      <motion.div
+        key={`content-${replayKey}`}
+        className="relative z-10 flex flex-col items-center"
+        variants={heroContentContainer}
+        initial={reduceMotion ? 'visible' : 'hidden'}
+        animate="visible"
+      >
+        <h1 className="font-display font-medium max-w-[760px]" style={headingStyle}>
+          <motion.span variants={heroSlideIn} style={{ display: 'block' }}>
+            Você não precisa saber nada de tecnologia
+          </motion.span>
+          <motion.span variants={heroSlideIn} style={{ display: 'block' }}>
+            pra ter uma loja digital de verdade.
+          </motion.span>
+        </h1>
+
+        <motion.div variants={heroSlideIn}>
+          <RotatingText
+            texts={HERO_TEXTS}
+            variant="slide"
+            rotationInterval={2600}
+            mainClassName="font-display font-medium"
+            style={headingStyle}
+          />
+        </motion.div>
+
+        <motion.p
+          variants={heroSlideIn}
+          className="font-body font-medium max-w-[520px] mt-5"
+          style={{ color: '#FFFFFF', lineHeight: 1.65, fontSize: '1.0625rem', textShadow: '0 1px 14px rgba(90,30,0,0.35)' }}
+        >
+          Catálogo, link único e pedidos organizados num só lugar — sua loja pronta em minutos.
+        </motion.p>
+
+        <motion.div variants={heroSlideIn} className="flex flex-wrap justify-center gap-3 mt-8">
+          <Link
+            href={`${APP_URL}/cadastro`}
+            className="inline-flex items-center gap-2 font-semibold text-[15px] rounded-full px-6 py-3.5 transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F97316]"
+            style={{ background: '#FFFFFF', color: '#0A0A0A', boxShadow: '0 10px 30px -12px rgba(249,115,22,0.45)' }}
+          >
+            Criar minha loja <span>→</span>
+          </Link>
+          <a
+            href="#como-funciona"
+            className="font-semibold text-[15px] rounded-full px-6 py-3.5 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            style={{ color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.7)' }}
+          >
+            Ver como funciona
+          </a>
+        </motion.div>
+      </motion.div>
+
+      {/* Só para testes locais (npm run dev): reinicia a animação de entrada.
+          No build de produção NODE_ENV é 'production' e o botão nem é renderizado. */}
+      {process.env.NODE_ENV === 'development' && (
+      <button
+        type="button"
+        onClick={() => setReplayKey(k => k + 1)}
+        className="absolute z-20 bottom-[104px] right-6 lg:right-10 inline-flex items-center gap-2 min-h-[44px] rounded-full px-4 font-body text-[13px] font-semibold cursor-pointer transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F97316]"
+        style={{ background: '#FFFFFF', color: '#0A0A0A', boxShadow: '0 8px 24px -10px rgba(10,10,10,0.5)' }}
+      >
+        <RotateCcw size={15} aria-hidden />
+        Rever animação
+      </button>
+      )}
+    </section>
+  )
+}
+
 export default function Home() {
 
   const shouldReduceMotion = useReducedMotion()
@@ -347,114 +572,7 @@ export default function Home() {
       {/* ============================================================
           HERO
           ============================================================ */}
-      <section
-        className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center text-center px-6 py-24"
-      >
-        {/* Textura de linhas diagonais — canto superior direito */}
-        <div
-          className="absolute top-0 right-0 w-[340px] h-[140px] pointer-events-none"
-          style={{
-            background: 'repeating-linear-gradient(-45deg, rgba(249,115,22,0.22) 0px, rgba(249,115,22,0.22) 1px, transparent 1px, transparent 16px)',
-            WebkitMaskImage: 'linear-gradient(to bottom left, black, transparent 70%)',
-            maskImage: 'linear-gradient(to bottom left, black, transparent 70%)',
-          }}
-        />
-
-        {/* Glow radial laranja */}
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            top: '58%',
-            left: '58%',
-            transform: 'translate(-50%, -50%)',
-            width: 640,
-            height: 560,
-            background: 'radial-gradient(circle, rgba(249,115,22,0.24) 0%, rgba(249,115,22,0) 68%)',
-          }}
-        />
-
-        {/* Conteúdo — blur+fade em cascata no mount */}
-        <motion.div
-          className="relative z-10 flex flex-col items-center"
-          variants={heroContainer}
-          initial={shouldReduceMotion ? 'visible' : 'hidden'}
-          animate="visible"
-        >
-
-          {/* Headline — dividida em 2 linhas para animar individualmente */}
-          <h1
-            className="font-display font-medium max-w-[760px]"
-            style={{
-              fontSize: 'clamp(2rem, 4.6vw, 3.2rem)',
-              lineHeight: 1.18,
-              letterSpacing: '-1.5px',
-              color: 'var(--color-lk-white)',
-            }}
-          >
-            <motion.span variants={blurFadeIn} style={{ display: 'block' }}>
-              Você não precisa saber nada de tecnologia
-            </motion.span>
-            <motion.span variants={blurFadeIn} style={{ display: 'block' }}>
-              pra ter uma loja digital de verdade.
-            </motion.span>
-          </h1>
-
-          {/* RotatingText — reaproveitando o componente existente */}
-          <motion.div variants={blurFadeIn}>
-            <RotatingText
-              texts={[
-                'Catálogo organizado.',
-                'Pedidos sem bagunça.',
-                'Sua marca, do seu jeito.',
-                'Direto onde você já vende.',
-              ]}
-              variant="slide"
-              rotationInterval={2600}
-              mainClassName="font-display font-medium"
-              style={{
-                fontSize: 'clamp(2rem, 4.6vw, 3.2rem)',
-                lineHeight: 1.18,
-                letterSpacing: '-1.5px',
-                color: 'var(--color-lk-white)',
-              }}
-            />
-          </motion.div>
-
-          {/* Subheadline */}
-          <motion.p
-            variants={blurFadeIn}
-            className="font-body max-w-[520px] mt-5"
-            style={{ color: 'var(--color-lk-gray-400)', lineHeight: 1.65, fontSize: '1.05rem' }}
-          >
-            Catálogo, link único e pedidos organizados num só lugar — sua loja pronta em minutos.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            variants={blurFadeIn}
-            className="flex flex-wrap justify-center gap-3 mt-8"
-          >
-            <Link
-              href={`${APP_URL}/cadastro`}
-              className="inline-flex items-center gap-2 font-semibold text-[15px] rounded-full px-6 py-3.5 transition-transform hover:-translate-y-0.5"
-              style={{ background: 'var(--color-lk-white)', color: '#0A0A0A' }}
-            >
-              Criar minha loja <span>→</span>
-            </Link>
-            <a
-              href="#como-funciona"
-              className="font-semibold text-[15px] rounded-full px-6 py-3.5 transition-colors hover:opacity-80"
-              style={{
-                color: 'var(--color-lk-white)',
-                border: '1px solid rgba(249,115,22,0.4)',
-              }}
-            >
-              Ver como funciona
-            </a>
-          </motion.div>
-
-        </motion.div>
-      </section>
+      <Hero />
 
 
 
@@ -671,7 +789,7 @@ export default function Home() {
               <Link
                 href={`${APP_URL}/cadastro`}
                 className="inline-flex items-center gap-2 font-semibold text-[15px] rounded-full px-6 py-3.5 transition-transform hover:-translate-y-0.5"
-                style={{ background: 'var(--color-lk-white)', color: '#0A0A0A' }}
+                style={{ background: 'var(--color-lk-white)', color: '#FFFFFF' }}
               >
                 Criar minha loja <span>→</span>
               </Link>

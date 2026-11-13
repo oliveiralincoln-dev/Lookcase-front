@@ -84,7 +84,7 @@ export function TestimonialsSection() {
                     width: activeIndex === i ? 28 : 8,
                     background: activeIndex === i
                       ? 'var(--color-lk-orange)'
-                      : 'rgba(255,255,255,0.12)',
+                      : 'rgba(10,10,10,0.12)',
                   }}
                 />
               ))}
@@ -129,7 +129,7 @@ export function TestimonialsSection() {
                 <div className="flex items-center gap-[5px] mb-6">
                   {[0,1,2,3,4].map(s => (
                     <svg key={s} width="15" height="15" viewBox="0 0 15 15" fill="none">
-                      <path d="M7.5 1L9.18 5.45H14L10.41 8.05L11.91 12.5L7.5 9.9L3.09 12.5L4.59 8.05L1 5.45H5.82L7.5 1Z" fill="#E5E5E5"/>
+                      <path d="M7.5 1L9.18 5.45H14L10.41 8.05L11.91 12.5L7.5 9.9L3.09 12.5L4.59 8.05L1 5.45H5.82L7.5 1Z" fill="#F97316"/>
                     </svg>
                   ))}
                 </div>
@@ -152,9 +152,9 @@ export function TestimonialsSection() {
                     <div
                       className="font-body text-[11px] font-semibold px-3 py-[5px] rounded-lg whitespace-nowrap"
                       style={{
-                        background: 'rgba(34,197,94,0.08)',
-                        border: '1px solid rgba(34,197,94,0.15)',
-                        color: '#4ade80',
+                        background: 'var(--color-lk-green-bg)',
+                        border: '1px solid var(--color-lk-green-border)',
+                        color: 'var(--color-lk-green-text)',
                       }}
                     >
                       {t.badge}
