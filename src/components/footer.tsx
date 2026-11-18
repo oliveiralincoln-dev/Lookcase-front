@@ -38,7 +38,6 @@ export function Footer() {
           {[
             { label: 'Como funciona', href: '/#como-funciona' },
             { label: 'Funcionalidades', href: '/#produto' },
-            { label: 'Assinatura', href: '/precos' },
           ].map((link) => (
             <a
               key={link.label}

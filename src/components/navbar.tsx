@@ -21,13 +21,11 @@ const NAV_LINKS = [
   { href: '/#produto',      label: 'Produto',         section: 'produto'      },
   { href: '/#como-funciona', label: 'Como funciona',  section: 'como-funciona' },
   { href: '/#o-que-muda',   label: 'Benefícios',      section: 'o-que-muda'   },
-  { href: '/precos',        label: 'Assinatura',       section: 'planos'       },
   { href: '/#faq',          label: 'FAQ',              section: 'faq'          },
 ]
 
 export default function Navbar() {
   const pathname = usePathname()
-  const isPrecos = pathname === '/precos'
   const [activeSection, setActiveSectionState] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [pillStyle, setPillStyle] = useState<React.CSSProperties>({})
@@ -100,24 +98,14 @@ export default function Navbar() {
     window.addEventListener('resize', updateHeroDark)
     updateHeroDark()
     requestAnimationFrame(() => {
-      if (pathname === '/precos') {
-        setActive('planos')
-      } else {
-        updateFromScroll()
-        if (itemRefs.current[0]) placePill(0)
-      }
+      updateFromScroll()
+      if (itemRefs.current[0]) placePill(0)
     })
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', updateHeroDark)
     }
   }, [setActive, placePill, pathname])
-
-  useEffect(() => {
-    if (pathname === '/precos') {
-      setActive('planos')
-    }
-  }, [pathname, setActive])
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 lg:px-24 py-4">
@@ -203,13 +191,11 @@ export default function Navbar() {
         <Link
           href={`${APP_URL}/entrar`}
           className={`font-body text-sm transition-colors ${
-            isPrecos
-              ? 'text-[rgba(23,13,6,0.82)] hover:text-[rgba(23,13,6,1)]'
-              : heroDark.right
-                ? 'text-white/70 hover:text-white'
-                : pathname === '/'
-                  ? 'text-[rgba(10,10,10,0.78)] hover:text-black'
-                  : 'text-lk-gray-500 hover:text-lk-gray-400'
+            heroDark.right
+              ? 'text-white/70 hover:text-white'
+              : pathname === '/'
+                ? 'text-[rgba(10,10,10,0.78)] hover:text-black'
+                : 'text-lk-gray-500 hover:text-lk-gray-400'
           }`}
         >
           Entrar
@@ -228,13 +214,11 @@ export default function Navbar() {
         <Link
           href={`${APP_URL}/entrar`}
           className={`font-body text-[13px] transition-colors ${
-            isPrecos
-              ? 'text-[rgba(23,13,6,0.82)] hover:text-[rgba(23,13,6,1)]'
-              : heroDark.mid
-                ? 'text-white/70 hover:text-white'
-                : pathname === '/'
-                  ? 'text-[rgba(10,10,10,0.78)] hover:text-black'
-                  : 'text-lk-gray-500 hover:text-lk-gray-400'
+            heroDark.mid
+              ? 'text-white/70 hover:text-white'
+              : pathname === '/'
+                ? 'text-[rgba(10,10,10,0.78)] hover:text-black'
+                : 'text-lk-gray-500 hover:text-lk-gray-400'
           }`}
         >
           Entrar
