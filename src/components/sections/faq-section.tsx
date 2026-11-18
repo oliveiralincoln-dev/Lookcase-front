@@ -25,7 +25,8 @@ export const FAQ_ITEMS = [
   },
 ]
 
-export function FAQSection() {
+export function FAQSection({ headingAs }: { headingAs?: 'h1' | 'h2' } = {}) {
+  const Heading = headingAs ?? 'h2'
   const [openItems, setOpenItems] = useState<Set<number>>(new Set())
 
   const toggleItem = (i: number) => {
@@ -41,9 +42,9 @@ export function FAQSection() {
     <section id="faq" className="px-5 lg:px-10 py-14 lg:py-20">
 
       <div className="max-w-3xl mx-auto">
-        <h2 className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.05] mb-12 text-center">
+        <Heading className="font-display text-[28px] lg:text-[40px] font-medium tracking-[-0.03em] leading-[1.05] mb-12 text-center">
           Perguntas frequentes.
-        </h2>
+        </Heading>
 
         <div className="flex flex-col gap-2">
           {FAQ_ITEMS.map((item, i) => (
