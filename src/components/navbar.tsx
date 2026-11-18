@@ -14,14 +14,13 @@ const SECTIONS = [
   'produto',
   'como-funciona',
   'o-que-muda',
-  'faq',
 ]
 
 const NAV_LINKS = [
   { href: '/#produto',      label: 'Produto',         section: 'produto'      },
   { href: '/#como-funciona', label: 'Como funciona',  section: 'como-funciona' },
   { href: '/#o-que-muda',   label: 'Benefícios',      section: 'o-que-muda'   },
-  { href: '/#faq',          label: 'FAQ',              section: 'faq'          },
+  { href: '/faq',           label: 'FAQ',              section: 'faq'          },
 ]
 
 export default function Navbar() {
@@ -98,8 +97,12 @@ export default function Navbar() {
     window.addEventListener('resize', updateHeroDark)
     updateHeroDark()
     requestAnimationFrame(() => {
-      updateFromScroll()
-      if (itemRefs.current[0]) placePill(0)
+      if (pathname === '/faq') {
+        setActive('faq')
+      } else {
+        updateFromScroll()
+        if (itemRefs.current[0]) placePill(0)
+      }
     })
     return () => {
       window.removeEventListener('scroll', onScroll)

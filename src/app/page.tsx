@@ -10,7 +10,6 @@ import { AnimatedList } from '@/components/ui/animated-list'
 import { FeaturesSection } from '@/components/sections/features-section'
 import { PromiseSection } from '@/components/sections/promise-section'
 import { TestimonialsSection } from '@/components/sections/testimonials-section'
-import { FAQSection } from '@/components/sections/faq-section'
 import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from 'motion/react'
 
 // URL do app (auth/dashboard/vitrine) — fica em outro repositório.
@@ -742,23 +741,6 @@ export default function Home() {
           SEÇÃO — DEPOIMENTOS
           ============================================================ */}
       <TestimonialsSection />
-
-
-      {/* ============================================================
-          DIVISOR
-          ============================================================ */}
-      <div
-        style={{
-          height: '1px',
-          background: 'linear-gradient(90deg, transparent, var(--color-lk-border) 20%, var(--color-lk-border) 80%, transparent)',
-        }}
-      />
-
-
-      {/* ============================================================
-          SEÇÃO — FAQ
-          ============================================================ */}
-      <FAQSection />
 
 
       {/* ============================================================
