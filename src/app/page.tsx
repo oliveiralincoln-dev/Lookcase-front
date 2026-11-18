@@ -194,12 +194,12 @@ const galleryCell = {
 }
 
 const promiseSlides = [
-  { text: 'A vitrine que a sua marca sempre mereceu.',          bg: '#F1EEE6', color: '#3A362E' },
-  { text: 'Cole no Instagram, no WhatsApp, em qualquer lugar.', bg: '#FAFAF8', color: '#1A1A18' },
-  { text: 'Cada peça, com foto e preço em segundos.',           bg: '#FCE8D8', color: '#7A3B12' },
-  { text: 'Nenhum pedido se perde no meio da conversa.',        bg: '#E7EBEC', color: '#2B3436' },
-  { text: 'Sua loja com cara de marca grande.',                 bg: '#E8ECE5', color: '#33402F' },
-  { text: 'Do clique à compra, tudo num toque.',                bg: '#EFEAE4', color: '#4A4038' },
+  { text: 'A vitrine que a sua marca sempre mereceu.',          bg: '#F97316', color: '#0A0A0A' },
+  { text: 'Cole no Instagram, no WhatsApp, em qualquer lugar.', bg: '#0A0A0A', color: '#FAF7F2' },
+  { text: 'Cada peça, com foto e preço em segundos.',           bg: '#9A3412', color: '#FAF7F2' },
+  { text: 'Nenhum pedido se perde no meio da conversa.',        bg: '#F97316', color: '#0A0A0A' },
+  { text: 'Sua loja com cara de marca grande.',                 bg: '#0A0A0A', color: '#FAF7F2' },
+  { text: 'Do clique à compra, tudo num toque.',                bg: '#9A3412', color: '#FAF7F2' },
 ]
 
 const blurFadeIn = {
