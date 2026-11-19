@@ -7,7 +7,7 @@ import { Footer } from '@/components/footer'
 import { Marquee, MarqueeCard } from '@/components/ui/marquee'
 import { Link2, Percent, Zap, Package, Share2, Palette, Shield, ClipboardList, Layers, Headphones, Infinity, RefreshCw, Shirt, ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react'
 import { AnimatedList } from '@/components/ui/animated-list'
-import { FeaturesSection } from '@/components/sections/features-section'
+import { FeaturesPanelsSection } from '@/components/sections/features-panels-section'
 import { PromiseSection } from '@/components/sections/promise-section'
 import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from 'motion/react'
@@ -618,9 +618,7 @@ export default function Home() {
       />
 
 
-      <div id="como-funciona">
-        <FeaturesSection />
-      </div>
+      <FeaturesPanelsSection />
 
 
       {/* ============================================================
